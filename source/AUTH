@@ -1,0 +1,22 @@
+To ensure that all authers is known for each medie file. Only files that cannot include authers in the source are mentioned. 
+
+Most graphics are by Iwan Gabovitch aka qubodup.
+
+All of qubodup's graphics are in the Public domain
+Poul Sander's files are multi licensed under "GPL v2 or later" OR "CC-BY-SA any version"
+
+/fonts/
+FreeSerif.ttf			Free Software Foundation
+PenguinAttack.ttf		Dustin Norlander - GPLv2
+
+/textures/
+background.png			qubodup
+fallback.png			Poul Sander
+
+/sprites/
+blockattack.sprite		Poul Sander
+
+
+
+
+

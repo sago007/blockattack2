@@ -1,0 +1,23 @@
+{
+
+"background" :  {
+	"texture" : "background",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 768,
+	"width" : 1024,
+	"number_of_frames" : 1,
+	"frame_time" : 1
+},
+
+"fallback" : {
+	"texture" : "fallback",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 1,
+	"frame_time" : 1
+}
+
+}

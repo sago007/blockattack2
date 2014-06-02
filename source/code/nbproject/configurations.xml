@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="94">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="." name="0">
+      <df name="sago">
+        <in>FrameCounter.cpp</in>
+        <in>SagoCommandQueue.cpp</in>
+        <in>SagoDataHolder.cpp</in>
+        <in>SagoMenu.cpp</in>
+        <in>SagoMisc.cpp</in>
+        <in>SagoMisc.hpp</in>
+        <in>SagoSprite.cpp</in>
+        <in>SagoSpriteHolder.cpp</in>
+        <in>SagoSpriteHolder.hpp</in>
+      </df>
+      <in>BlockClient.cpp</in>
+      <in>BlockClient.hpp</in>
+      <in>BlockMenu.cpp</in>
+      <in>BlockMenu.hpp</in>
+      <in>blockattack.cpp</in>
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>false</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <flagsDictionary>
+        <element flagsID="0" commonFlags="-O2 -std=c++0x"/>
+      </flagsDictionary>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
+          <executablePath>../../game/blockattack</executablePath>
+        </makeTool>
+      </makefileType>
+      <item path="BlockClient.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="BlockClient.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="BlockMenu.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="BlockMenu.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="blockattack.cpp" ex="false" tool="1" flavor2="4">
+      </item>
+      <folder path="0/sago">
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <item path="sago/FrameCounter.cpp" ex="false" tool="1" flavor2="8">
+      </item>
+      <item path="sago/SagoCommandQueue.cpp" ex="false" tool="1" flavor2="8">
+      </item>
+      <item path="sago/SagoDataHolder.cpp" ex="false" tool="1" flavor2="8">
+      </item>
+      <item path="sago/SagoMenu.cpp" ex="false" tool="1" flavor2="8">
+      </item>
+      <item path="sago/SagoMisc.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sago/SagoMisc.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="sago/SagoSprite.cpp" ex="false" tool="1" flavor2="8">
+      </item>
+      <item path="sago/SagoSpriteHolder.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sago/SagoSpriteHolder.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>
