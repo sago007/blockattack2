@@ -28,10 +28,12 @@ http://blockattack.sf.net
 #include "sago/SagoSprite.hpp"
 #include "sago/SagoSpriteHolder.hpp"
 #include "sago/FrameCounter.hpp"
+#include "sago/SagoMusicBackground.hpp"
 #include <SFML/Graphics.hpp>
 #include <physfs.h>
 #include <iostream>
 #include <vector>
+#include <unistd.h>
 
 using namespace std;
 
@@ -58,6 +60,7 @@ int main(int argc, const char* argv[])
 	sago::SagoCommandQueue cmdQ;
 	SetStandardKeyBinds(cmdQ);
 	BlockMenu menu(dataHolder);
+	sago::music::SetDataHolder(dataHolder);
 	sf::RenderWindow window(sf::VideoMode(1024, 768), "Block Attack - Rise of the blocks");
 	sf::Clock clock;  //start the clock
 	sf::Int32 lastFrameTime = 0;
@@ -87,6 +90,8 @@ int main(int argc, const char* argv[])
 		menu.DrawMenu(window);
 		fc.Draw(window,frameTime);
 		window.display();
+		sago::music::Play("bgmusic");
+		usleep(10000);
 	}
 	PHYSFS_deinit();
 	return 0;

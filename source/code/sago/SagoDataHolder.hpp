@@ -22,6 +22,7 @@ http://blockattack.sf.net
 */
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 #ifndef TEXTUREHOLDER_HPP
 #define	TEXTUREHOLDER_HPP
@@ -33,6 +34,8 @@ public:
 	SagoDataHolder();
 	const sf::Texture* getTexturePtr(const std::string &textureName) const;
 	const sf::Font* getFontPtr(const std::string &fontName) const;
+	sf::Music* getMusicPtr(const std::string &musicName) const;
+	sf::Sound* getSoundPtr(const std::string &soundName) const;
 	virtual ~SagoDataHolder();
 private:
 	SagoDataHolder(const SagoDataHolder& base) = delete;
