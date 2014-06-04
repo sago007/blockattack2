@@ -12,7 +12,10 @@
         <in>SagoSprite.cpp</in>
         <in>SagoSpriteHolder.cpp</in>
       </df>
+      <in>BlockClient.cpp</in>
       <in>BlockMenu.cpp</in>
+      <in>CommandProcessor.cpp</in>
+      <in>GameStateManager.cpp</in>
       <in>blockattack.cpp</in>
     </df>
     <logicalFolder name="ExternalFiles"
@@ -34,6 +37,9 @@
         <dependencyChecking>false</dependencyChecking>
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
+      <flagsDictionary>
+        <element flagsID="0" commonFlags="-O2 -std=c++0x"/>
+      </flagsDictionary>
       <codeAssistance>
         <envVariables>
           <Elem>_GLIBCXX_USE_C99_STDINT_TR1</Elem>
@@ -51,7 +57,23 @@
           </ccTool>
         </makeTool>
       </makefileType>
-      <item path="BlockMenu.cpp" ex="false" tool="1" flavor2="0">
+      <item path="BlockClient.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="BlockMenu.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="CommandProcessor.cpp" ex="false" tool="1" flavor2="8">
+      </item>
+      <item path="GameStateManager.cpp" ex="false" tool="1" flavor2="8">
+      </item>
+      <item path="blockattack.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="sago/FrameCounter.cpp" ex="false" tool="1" flavor2="8">
         <ccTool>
           <incDir>
             <pElem>/usr/include/SFML/Graphics</pElem>
@@ -63,31 +85,7 @@
           </incDir>
         </ccTool>
       </item>
-      <item path="blockattack.cpp" ex="false" tool="1" flavor2="0">
-        <ccTool>
-          <incDir>
-            <pElem>/usr/include/SFML/Graphics</pElem>
-            <pElem>/usr/include/SFML/Window</pElem>
-            <pElem>sago</pElem>
-            <pElem>/usr/include/SFML</pElem>
-            <pElem>/usr/include/SFML/System</pElem>
-            <pElem>.</pElem>
-          </incDir>
-        </ccTool>
-      </item>
-      <item path="sago/FrameCounter.cpp" ex="false" tool="1" flavor2="0">
-        <ccTool>
-          <incDir>
-            <pElem>/usr/include/SFML/Graphics</pElem>
-            <pElem>sago</pElem>
-            <pElem>/usr/include/SFML</pElem>
-            <pElem>/usr/include/SFML/System</pElem>
-            <pElem>/usr/include/SFML/Window</pElem>
-            <pElem>.</pElem>
-          </incDir>
-        </ccTool>
-      </item>
-      <item path="sago/SagoCommandQueue.cpp" ex="false" tool="1" flavor2="0">
+      <item path="sago/SagoCommandQueue.cpp" ex="false" tool="1" flavor2="8">
         <ccTool>
           <incDir>
             <pElem>sago</pElem>
@@ -99,32 +97,21 @@
           </incDir>
         </ccTool>
       </item>
-      <item path="sago/SagoDataHolder.cpp" ex="false" tool="1" flavor2="0">
-        <ccTool>
+      <item path="sago/SagoDataHolder.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
           <incDir>
-            <pElem>sago</pElem>
-            <pElem>/usr/include/SFML/Graphics</pElem>
-            <pElem>/usr/include/SFML/System</pElem>
-            <pElem>/usr/include/SFML</pElem>
-            <pElem>/usr/include/SFML/Window</pElem>
-            <pElem>/usr/include/SFML/Audio</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
       </item>
-      <item path="sago/SagoMenu.cpp" ex="false" tool="1" flavor2="0">
-        <ccTool>
+      <item path="sago/SagoMenu.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
           <incDir>
-            <pElem>/usr/include/SFML/Graphics</pElem>
-            <pElem>sago</pElem>
-            <pElem>/usr/include/SFML/System</pElem>
-            <pElem>/usr/include/SFML</pElem>
-            <pElem>/usr/include/SFML/Window</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
       </item>
-      <item path="sago/SagoMisc.cpp" ex="false" tool="1" flavor2="0">
+      <item path="sago/SagoMisc.cpp" ex="false" tool="1" flavor2="8">
         <ccTool>
           <incDir>
             <pElem>sago</pElem>
@@ -132,7 +119,7 @@
           </incDir>
         </ccTool>
       </item>
-      <item path="sago/SagoMusicBackground.cpp" ex="false" tool="1" flavor2="0">
+      <item path="sago/SagoMusicBackground.cpp" ex="false" tool="1" flavor2="8">
         <ccTool>
           <incDir>
             <pElem>sago</pElem>
@@ -145,7 +132,7 @@
           </incDir>
         </ccTool>
       </item>
-      <item path="sago/SagoSprite.cpp" ex="false" tool="1" flavor2="0">
+      <item path="sago/SagoSprite.cpp" ex="false" tool="1" flavor2="8">
         <ccTool>
           <incDir>
             <pElem>/usr/include/SFML/Graphics</pElem>
@@ -157,15 +144,9 @@
           </incDir>
         </ccTool>
       </item>
-      <item path="sago/SagoSpriteHolder.cpp" ex="false" tool="1" flavor2="0">
-        <ccTool>
+      <item path="sago/SagoSpriteHolder.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
           <incDir>
-            <pElem>sago</pElem>
-            <pElem>/usr/include/SFML/Graphics</pElem>
-            <pElem>/usr/include/SFML/System</pElem>
-            <pElem>/usr/include/SFML</pElem>
-            <pElem>/usr/include/SFML/Window</pElem>
-            <pElem>/usr/include/json-c</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>

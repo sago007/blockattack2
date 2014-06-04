@@ -23,5 +23,42 @@ http://blockattack.sf.net
 
 #include "BlockClient.hpp"
 
+struct BlockClient::BlockClientData { 
+	bool active = true;
+};
+
 BlockClient::BlockClient(const sago::SagoDataHolder &texHolder) {
+	this->data = new BlockClient::BlockClientData();
 }
+
+BlockClient::~BlockClient() {
+	delete this->data;
+}
+
+bool BlockClient::IsActive() {
+	return this->data->active;
+}
+
+bool BlockClient::IsBlockingDraw() {
+	return true;
+}
+
+bool BlockClient::IsBlockingUpdate() {
+	return true;
+}
+
+void BlockClient::Draw(sf::RenderWindow &target) {
+	
+}
+void BlockClient::Update(float fDeltaTime, const sago::SagoCommandQueue &input) {
+	for (size_t i = 0; i < input.GetCommandQueue().size();i++) {
+		std::string cmd = input.GetCommandQueue().at(i);
+		if (cmd == "BACK") {
+			this->data->active = false;
+		}
+	}
+}
+void BlockClient::UpdateCommandQueue(sago::SagoCommandQueue &inout) {
+	
+}
+	

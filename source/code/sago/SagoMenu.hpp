@@ -58,7 +58,7 @@ public:
 	void addButton(const SagoMenuButton &b);
 	void Up();
 	void Down();
-	void Action(sago::SagoCommandQueue &queue);
+	void Action(const sago::SagoCommandQueue &queue, std::vector<std::string> &outCommands);
 private:
 	void placeButtons();
 	std::vector<SagoMenuButton> buttons;
@@ -72,7 +72,7 @@ public:
 	void PushMenu(const SagoMenu &menu);
 	void PopMenu();
 	void DrawMenu(sf::RenderWindow &target);
-	void Action(sago::SagoCommandQueue &queue);
+	void Action(const sago::SagoCommandQueue &queue, std::vector<std::string> &outCommands);
 	void Up();
 	void Down();
 private:

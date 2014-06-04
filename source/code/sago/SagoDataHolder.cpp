@@ -59,7 +59,7 @@ const sf::Texture* SagoDataHolder::getTexturePtr(const std::string &textureName)
 	else {
 		ret = new sf::Texture();
 	}
-	std::string path = "data/textures/"+textureName+".png";
+	std::string path = "textures/"+textureName+".png";
 	if (!PHYSFS_exists(path.c_str())) {
 		std::cerr << "getTextureFailed - Texture does not exists: " << path << std::endl;
 		return ret;
@@ -95,7 +95,7 @@ const sf::Font* SagoDataHolder::getFontPtr(const std::string &fontName) const {
 	else {
 		ret = new sf::Font();
 	}
-	std::string path = "data/fonts/"+fontName+".ttf";
+	std::string path = "fonts/"+fontName+".ttf";
 	if (!PHYSFS_exists(path.c_str())) {
 		std::cerr << "getFontPtr - Font does not exists: " << path << std::endl;
 		return ret;
@@ -131,7 +131,7 @@ sf::Music* SagoDataHolder::getMusicPtr(const std::string &musicName) const {
 	else {
 		ret = new sf::Music();
 	}
-	std::string path = "data/music/"+musicName+".ogg";
+	std::string path = "music/"+musicName+".ogg";
 	if (!PHYSFS_exists(path.c_str())) {
 		std::cerr << "getMusicPtr - Music file does not exists: " << path << std::endl;
 		return ret;
@@ -167,7 +167,7 @@ sf::Sound* SagoDataHolder::getSoundPtr(const std::string &soundName) const {
 	else {
 		ret = new sf::Sound();
 	}
-	std::string path = "data/sounds/"+soundName+".ogg";
+	std::string path = "sounds/"+soundName+".ogg";
 	if (!PHYSFS_exists(path.c_str())) {
 		std::cerr << "getSoundPtr - Sound file does not exists: " << path << std::endl;
 		return ret;

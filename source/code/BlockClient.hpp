@@ -24,13 +24,24 @@ http://blockattack.sf.net
 #ifndef BLOCKCLIENT_HPP
 #define	BLOCKCLIENT_HPP
 
-class BlockClient {
+#include "GameState.hpp"
+#include "sago/SagoDataHolder.hpp"
+
+class BlockClient : public GameState {
 public:
 	BlockClient(const sago::SagoDataHolder &texHolder);
-	void Update(float fDeltaTime, const sago::SagoCommandQueue &input);
+	~BlockClient();
+	bool IsActive();
+	bool IsBlockingDraw();
+	bool IsBlockingUpdate();
 	void Draw(sf::RenderWindow &target);
+	void Update(float fDeltaTime, const sago::SagoCommandQueue &input);
+	void UpdateCommandQueue(sago::SagoCommandQueue &inout);
 private:
-
+	BlockClient(const BlockClient& base) = delete;
+	BlockClient& operator=(const BlockClient& base) = delete;
+	struct BlockClientData;
+	BlockClientData *data;
 };
 
 #endif	/* BLOCKCLIENT_HPP */

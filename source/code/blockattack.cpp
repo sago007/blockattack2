@@ -22,6 +22,8 @@ http://blockattack.sf.net
 */
 
 #include "BlockMenu.hpp"
+#include "GameStateManager.hpp"
+#include "CommandProcessor.hpp"
 #include "sago/SagoDataHolder.hpp"
 #include "sago/SagoMenu.hpp"
 #include "sago/SagoCommandQueue.hpp"
@@ -54,13 +56,17 @@ int main(int argc, const char* argv[])
 {
 	//Init the file system abstraction layer
 	PHYSFS_init(argv[0]);
-	PHYSFS_addToSearchPath(PHYSFS_getBaseDir(),0);
+	std::string baseSearchPath = PHYSFS_getBaseDir();
+	baseSearchPath += "/data/";
+	PHYSFS_addToSearchPath(baseSearchPath.c_str(),0);
 	sago::SagoDataHolder dataHolder;
 	sago::SagoSpriteHolder spriteHolder(dataHolder);
 	sago::SagoCommandQueue cmdQ;
-	SetStandardKeyBinds(cmdQ);
-	BlockMenu menu(dataHolder);
 	sago::music::SetDataHolder(dataHolder);
+	SetStandardKeyBinds(cmdQ);
+	std::shared_ptr<GameState> menu(new BlockMenu(dataHolder));
+	GameStateManager stateManager;
+	stateManager.PushState(menu);
 	sf::RenderWindow window(sf::VideoMode(1024, 768), "Block Attack - Rise of the blocks");
 	sf::Clock clock;  //start the clock
 	sf::Int32 lastFrameTime = 0;
@@ -77,20 +83,21 @@ int main(int argc, const char* argv[])
 			}
 		}
 		cmdQ.ReadKeysAndAddCommands();
-		menu.ReadEvents(cmdQ);
+		ProcessCommands(cmdQ,dataHolder,stateManager);
+		stateManager.Update(fDeltaTime,cmdQ);
+		cmdQ.ClearCommands();
+		stateManager.UpdateCommandQueue(cmdQ);
 		for (size_t i = 0; i < cmdQ.GetCommandQueue().size();i++) {
 			std::string cmd = cmdQ.GetCommandQueue().at(i);
 			if (cmd == "QUIT") {
 				window.close();
 			}
 		}
-		cmdQ.ClearCommands();
 		window.clear();
 		spriteHolder.GetSprite("background").Draw(window,frameTime,0,0);
-		menu.DrawMenu(window);
+		stateManager.Draw(window);
 		fc.Draw(window,frameTime);
 		window.display();
-		sago::music::Play("bgmusic");
 		usleep(10000);
 	}
 	PHYSFS_deinit();

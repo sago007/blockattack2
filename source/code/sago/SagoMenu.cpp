@@ -117,12 +117,12 @@ void SagoMenu::DrawMenu(sf::RenderWindow &target) {
 	
 }
 
-void SagoMenu::Action(sago::SagoCommandQueue &q) {
+void SagoMenu::Action(const sago::SagoCommandQueue &q, std::vector<std::string> &output) {
 	if (marked < buttons.size()) {
-		q.PushCommand(buttons.at(marked).GetCommand());
+		output.push_back(buttons.at(marked).GetCommand());
 	}
 	else {
-		q.PushCommand(exit.GetCommand());
+		output.push_back(exit.GetCommand());
 	}
 }
 
@@ -175,9 +175,9 @@ void SagoMenuStack::DrawMenu(sf::RenderWindow &target) {
 	}
 }
 
-void SagoMenuStack::Action(sago::SagoCommandQueue &queue) {
+void SagoMenuStack::Action(const sago::SagoCommandQueue &queue, std::vector<std::string> &outCommands) {
 	if (this->menus.size() > 0) {
-		this->menus.back().Action(queue);
+		this->menus.back().Action(queue, outCommands);
 	}	
 }
 

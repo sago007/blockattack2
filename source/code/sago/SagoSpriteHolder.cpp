@@ -59,7 +59,7 @@ SagoSpriteHolder::~SagoSpriteHolder() {
 }
 
 void SagoSpriteHolder::ReadSpriteFile(const std::string &filename) {
-	string fullfile = "data/sprites/"+filename;
+	string fullfile = "sprites/"+filename;
 	string content = sago::GetFileContent(fullfile.c_str());
 	json_object * jobj = json_tokener_parse(content.c_str());
 	json_object_object_foreach(jobj, key, val) {
@@ -156,7 +156,7 @@ void SagoSpriteHolder::ReadSpriteFile(const std::string &filename) {
 }
 
 void SagoSpriteHolder::ReadSprites() {
-	std::vector<std::string> spritefiles = GetFileList("data/sprites");
+	std::vector<std::string> spritefiles = GetFileList("sprites");
 	for (std::string &item : spritefiles  ) {
 		cout << "Found " << item << endl;
 		ReadSpriteFile(item);

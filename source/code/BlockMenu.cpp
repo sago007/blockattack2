@@ -22,6 +22,7 @@ http://blockattack.sf.net
 */
 
 #include "BlockMenu.hpp"
+#include "sago/SagoMusicBackground.hpp"
 
 BlockMenu::BlockMenu(const sago::SagoDataHolder &texHolder) {
 	sf::Text menutext;
@@ -37,15 +38,27 @@ BlockMenu::BlockMenu(const sago::SagoDataHolder &texHolder) {
 	b.SetCommand("SP_TT");
 	topmenu.addButton(b);
 	stack.PushMenu(topmenu);
-	
+	sago::music::Play("bgmusic");
 }
 
-void BlockMenu::DrawMenu(sf::RenderWindow &target) {
+bool BlockMenu::IsActive() {
+	return true;
+}
+
+bool BlockMenu::IsBlockingDraw() {
+	return true;
+}
+
+bool BlockMenu::IsBlockingUpdate() {
+	return true;
+}
+
+void BlockMenu::Draw(sf::RenderWindow &target) {
 	this->stack.DrawMenu(target);
 }
 
 
-void BlockMenu::ReadEvents(sago::SagoCommandQueue &cmdQ) {
+void BlockMenu::ReadEvents(const sago::SagoCommandQueue &cmdQ) {
 	for (size_t i = 0; i < cmdQ.GetCommandQueue().size();i++) {
 			std::string cmd = cmdQ.GetCommandQueue().at(i);
 		if (cmd == "POP_MENU") {
@@ -58,7 +71,18 @@ void BlockMenu::ReadEvents(sago::SagoCommandQueue &cmdQ) {
 			stack.Down();
 		}
 		if (cmd == "CONFIRM") {
-			stack.Action(cmdQ);
+			stack.Action(cmdQ,outQueue);
 		}
 	}
+}
+
+void BlockMenu::Update(float fDeltaTime, const sago::SagoCommandQueue &input) {
+	ReadEvents(input);
+}
+
+void BlockMenu::UpdateCommandQueue(sago::SagoCommandQueue& inout) {
+	for (std::string item : this->outQueue) {
+		inout.PushCommand(item);
+	}
+	this->outQueue.clear();
 }

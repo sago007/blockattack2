@@ -24,17 +24,24 @@ http://blockattack.sf.net
 #ifndef BLOCKMENU_HPP
 #define	BLOCKMENU_HPP
 
+#include "GameState.hpp"
 #include "sago/SagoMenu.hpp"
 #include "sago/SagoDataHolder.hpp"
 #include <vector>
 
-class BlockMenu {
+class BlockMenu : public GameState {
 public:
 	BlockMenu(const sago::SagoDataHolder &texHolder);
-	void DrawMenu(sf::RenderWindow &target);
-	void ReadEvents(sago::SagoCommandQueue &queue);
+	bool IsActive();
+	bool IsBlockingDraw();
+	bool IsBlockingUpdate();
+	void Draw(sf::RenderWindow &target);
+	void Update(float fDeltaTime, const sago::SagoCommandQueue &input);
+	void UpdateCommandQueue(sago::SagoCommandQueue &inout);
 private:
+	void ReadEvents(const sago::SagoCommandQueue &queue);
 	sago::menu::SagoMenuStack stack;
+	std::vector<std::string> outQueue;
 };
 
 #endif	/* BLOCKMENU_HPP */
