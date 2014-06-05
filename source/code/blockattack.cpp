@@ -82,7 +82,7 @@ int main(int argc, const char* argv[])
 				window.close();
 			}
 		}
-		cmdQ.ReadKeysAndAddCommands();
+		cmdQ.ReadKeysAndAddCommands(window);
 		ProcessCommands(cmdQ,dataHolder,stateManager);
 		stateManager.Update(fDeltaTime,cmdQ);
 		cmdQ.ClearCommands();

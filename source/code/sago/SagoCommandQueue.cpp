@@ -39,7 +39,10 @@ struct BoundCommand {
 struct SagoCommandQueue::SagoCommandQueueData {
 	std::vector<std::string> queue;
 	std::unordered_map<std::string,bool> keys;
-	std::map<sf::Keyboard::Key,std::string> binds;
+	sf::Vector2i mousePosition = sf::Vector2i(0, 0);
+	bool mouseMoved = false;
+	std::map<sf::Keyboard::Key, std::string> binds;
+	std::map<sf::Mouse::Button, std::string> mouseBinds;
 	std::vector<BoundCommand> bindCommands;
 };	
 	
@@ -52,7 +55,7 @@ SagoCommandQueue::~SagoCommandQueue() {
 }
 
 
-void SagoCommandQueue::ReadKeysAndAddCommands() {
+void SagoCommandQueue::ReadKeysAndAddCommands(sf::RenderWindow &window) {
 	for (auto iterator = data->binds.begin(); iterator != data->binds.end(); iterator++) {
 		data->keys[iterator->second] = sf::Keyboard::isKeyPressed(iterator->first);
 	}
@@ -63,6 +66,9 @@ void SagoCommandQueue::ReadKeysAndAddCommands() {
 		}
 		item.lastState = pressed;
 	}
+	sf::Vector2i localPosition = sf::Mouse::getPosition(window);
+	this->data->mouseMoved = (localPosition != this->data->mousePosition);
+	this->data->mousePosition = localPosition;
 }
 
 void SagoCommandQueue::PushCommand(const std::string& cmd) {
@@ -77,6 +83,10 @@ void SagoCommandQueue::BindKey(const sf::Keyboard::Key& key, const std::string& 
 	data->binds[key] = bindname;
 }
 
+void SagoCommandQueue::BindMouseButton(const sf::Mouse::Button &b, const std::string &bindname) {
+	data->mouseBinds[b] = bindname;
+}
+
 void SagoCommandQueue::BindKeyCommand(const std::string &bindname, const std::string& cmd) {
 	BoundCommand bc;
 	bc.bindname = bindname;
@@ -88,8 +98,17 @@ bool SagoCommandQueue::IsPressed(const std::string& bindname) const {
 	return data->keys[bindname];
 }
 
+bool SagoCommandQueue::MouseMoved() const {
+	return data->mouseMoved;
+}
+
+
 const std::vector<std::string> &SagoCommandQueue::GetCommandQueue() const {
 	return data->queue;
+}
+
+const sf::Vector2i &SagoCommandQueue::GetMousePosition() const {
+	return data->mousePosition;
 }
 
 void SagoCommandQueue::AddHandler(const std::string &cmd,std::function<void(std::string)> callback) {

@@ -42,6 +42,7 @@ private:
 	void ReadEvents(const sago::SagoCommandQueue &queue);
 	sago::menu::SagoMenuStack stack;
 	std::vector<std::string> outQueue;
+	bool mousePressed = true;
 };
 
 #endif	/* BLOCKMENU_HPP */

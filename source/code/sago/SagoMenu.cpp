@@ -126,6 +126,27 @@ void SagoMenu::Action(const sago::SagoCommandQueue &q, std::vector<std::string> 
 	}
 }
 
+void SagoMenu::Update(float fDeltaTime, const sago::SagoCommandQueue &input) {
+	if (input.MouseMoved()) {
+		const sf::Vector2f bSize = sf::Vector2f(600.0f,60.0f);
+		const sf::Vector2i &pos = input.GetMousePosition();
+		for ( size_t i = 0; i < buttons.size(); i++ ) {
+			float x = buttons.at(i).GetX();
+			float y = buttons.at(i).GetY();
+			if ( pos.x > x && x+bSize.x > pos.x && y < pos.y && y+bSize.y > pos.y ) {
+				marked = i;
+			}
+		}
+		{
+			float x = exit.GetX();
+			float y = exit.GetY();
+			if ( pos.x > x && x+bSize.x > pos.x && y < pos.y && y+bSize.y > pos.y ) {
+				marked = buttons.size();
+			}
+		}
+	}
+}
+
 void SagoMenu::Down() {
 	marked++;
 	if(marked>buttons.size())
@@ -178,6 +199,12 @@ void SagoMenuStack::DrawMenu(sf::RenderWindow &target) {
 void SagoMenuStack::Action(const sago::SagoCommandQueue &queue, std::vector<std::string> &outCommands) {
 	if (this->menus.size() > 0) {
 		this->menus.back().Action(queue, outCommands);
+	}	
+}
+
+void SagoMenuStack::Update(float fDeltaTime, const sago::SagoCommandQueue &input) {
+	if (this->menus.size() > 0) {
+		this->menus.back().Update(fDeltaTime,input);
 	}	
 }
 

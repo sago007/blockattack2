@@ -77,7 +77,12 @@ void BlockMenu::ReadEvents(const sago::SagoCommandQueue &cmdQ) {
 }
 
 void BlockMenu::Update(float fDeltaTime, const sago::SagoCommandQueue &input) {
+	this->stack.Update(fDeltaTime,input);
 	ReadEvents(input);
+	if (!this->mousePressed && sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+		stack.Action(input,outQueue);
+	}
+	this->mousePressed = sf::Mouse::isButtonPressed(sf::Mouse::Left);
 }
 
 void BlockMenu::UpdateCommandQueue(sago::SagoCommandQueue& inout) {

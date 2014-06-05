@@ -34,15 +34,18 @@ class SagoCommandQueue {
 public:
 	SagoCommandQueue();
 	~SagoCommandQueue();
-	void ReadKeysAndAddCommands();
+	void ReadKeysAndAddCommands(sf::RenderWindow &window);
 	void PushCommand(const std::string &cmd);
 	void AddHandler(const std::string &cmd,std::function<void(std::string)> callback);
 	void ProcessAllHandlers();
 	void ClearCommands();
 	void BindKey(const sf::Keyboard::Key &key, const std::string &bindname);
+	void BindMouseButton(const sf::Mouse::Button &b, const std::string &bindname);
 	void BindKeyCommand(const std::string &bindname, const std::string &cmd);
 	bool IsPressed(const std::string &bindname) const;
+	bool MouseMoved() const;
 	const std::vector<std::string> &GetCommandQueue() const;
+	const sf::Vector2i &GetMousePosition() const;
 private:
 	SagoCommandQueue(const SagoCommandQueue& base) = delete;
     SagoCommandQueue& operator=(const SagoCommandQueue& base) = delete;

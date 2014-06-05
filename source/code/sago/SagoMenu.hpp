@@ -59,6 +59,7 @@ public:
 	void Up();
 	void Down();
 	void Action(const sago::SagoCommandQueue &queue, std::vector<std::string> &outCommands);
+	void Update(float fDeltaTime, const sago::SagoCommandQueue &input);
 private:
 	void placeButtons();
 	std::vector<SagoMenuButton> buttons;
@@ -73,6 +74,7 @@ public:
 	void PopMenu();
 	void DrawMenu(sf::RenderWindow &target);
 	void Action(const sago::SagoCommandQueue &queue, std::vector<std::string> &outCommands);
+	void Update(float fDeltaTime, const sago::SagoCommandQueue &input);
 	void Up();
 	void Down();
 private:
