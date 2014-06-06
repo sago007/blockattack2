@@ -24,6 +24,7 @@ http://blockattack.sf.net
 #ifndef SAGOMISC_HPP
 #define	SAGOMISC_HPP
 
+#include <SFML/Graphics.hpp>
 #include <vector>
 #include <string>
 
@@ -32,7 +33,7 @@ namespace sago {
 	std::vector<std::string> GetFileList(const char* dir);
 	
 	std::string GetFileContent(const char* filename);
-	
+		
 }  //namespace sago
 
 #endif	/* SAGOMISC_HPP */

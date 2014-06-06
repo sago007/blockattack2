@@ -1,5 +1,15 @@
 {
 
+"fallback" : {
+	"texture" : "fallback",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 1,
+	"frame_time" : 1
+},
+
 "background" :  {
 	"texture" : "background",
 	"topx" : 0,
@@ -10,12 +20,12 @@
 	"frame_time" : 1
 },
 
-"fallback" : {
-	"texture" : "fallback",
+"bexit" : {
+	"texture" : "bexit",
 	"topx" : 0,
 	"topy" : 0,
-	"height" : 64,
-	"width" : 64,
+	"height" : 100,
+	"width" : 100,
 	"number_of_frames" : 1,
 	"frame_time" : 1
 }

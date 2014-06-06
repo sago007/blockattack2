@@ -29,7 +29,7 @@ http://blockattack.sf.net
 
 class BlockClient : public sago::GameState {
 public:
-	BlockClient(const sago::SagoDataHolder &texHolder);
+	BlockClient(const sago::SagoDataHolder &dataHolder);
 	~BlockClient();
 	bool IsActive();
 	bool IsBlockingDraw();
