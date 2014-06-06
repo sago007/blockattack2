@@ -72,6 +72,8 @@ void SagoSpriteHolder::ReadSpriteFile(const std::string &filename) {
 		int width = 0;
 		int number_of_frames = 1;
 		int frame_time = 1;
+		int originx = 0;
+		int originy = 0;
 		enum json_type type = json_object_get_type(val);
 		if (type == json_type_object) {
 			json_object *innerobject = json_object_object_get(jobj, key);
@@ -139,6 +141,24 @@ void SagoSpriteHolder::ReadSpriteFile(const std::string &filename) {
 						cerr << "Error passing sprite! File: " << filename << ", sprite: " << spriteName << ", key: " << key2 << ". Value was expected to be an integer!" << endl; 
 					}
 				}
+				if (strequal(key2,"originx")) {
+					type = json_object_get_type(val2);
+					if (type == json_type_int) {
+						originx = json_object_get_int(val2);
+					}
+					else {
+						cerr << "Error passing sprite! File: " << filename << ", sprite: " << spriteName << ", key: " << key2 << ". Value was expected to be an integer!" << endl; 
+					}
+				}
+				if (strequal(key2,"originy")) {
+					type = json_object_get_type(val2);
+					if (type == json_type_int) {
+						originy = json_object_get_int(val2);
+					}
+					else {
+						cerr << "Error passing sprite! File: " << filename << ", sprite: " << spriteName << ", key: " << key2 << ". Value was expected to be an integer!" << endl; 
+					}
+				}
 			}
 			if (number_of_frames < 1) {
 				number_of_frames = 1;
@@ -147,6 +167,7 @@ void SagoSpriteHolder::ReadSpriteFile(const std::string &filename) {
 				frame_time = 1;
 			}
 			std::shared_ptr<sago::SagoSprite> ptr(new SagoSprite(*(data->tex),textureName,sf::IntRect(topx,topy,width,height),number_of_frames,frame_time));
+			ptr->SetOrigin(sf::Vector2i(originx,originy));
 			this->data->sprites[std::string(spriteName)] = ptr;
 		}
 		else {

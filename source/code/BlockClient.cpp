@@ -36,7 +36,7 @@ namespace {
 	
 	void DrawBlockGame(const BlockGame &g, const sf::Rect<int> &place, const sago::SagoSpriteHolder &spHolder, float fTime, sf::RenderWindow &target) {
 		const sago::SagoSprite &background = spHolder.GetSprite("boardbackback");
-		background.Draw(target,fTime,place.left-57,place.top-72);
+		background.Draw(target,fTime,place.left,place.top);
 		const auto &board = g.GetBoard();
 		for (int i=0; i< g.coloms; i++) {
 			for (int j=0;j< g.rows;j++) {

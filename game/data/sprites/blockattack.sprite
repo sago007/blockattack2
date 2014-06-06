@@ -47,7 +47,9 @@
 	"height" : 699,
 	"width" : 476,
 	"number_of_frames" : 1,
-	"frame_time" : 1
+	"frame_time" : 1,
+	"originx" : 57,
+	"originy" : 72
 }
 
 }

@@ -15,7 +15,6 @@
       </df>
       <in>BlockClient.cpp</in>
       <in>BlockGame.cpp</in>
-      <in>BlockGame.hpp</in>
       <in>BlockMenu.cpp</in>
       <in>CommandProcessor.cpp</in>
       <in>GameStateManager.cpp</in>
@@ -61,10 +60,10 @@
         </makeTool>
       </makefileType>
       <item path="BlockClient.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
       </item>
-      <item path="BlockGame.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="BlockGame.hpp" ex="false" tool="3" flavor2="0">
+      <item path="BlockGame.cpp" ex="false" tool="1" flavor2="8">
       </item>
       <item path="BlockMenu.cpp" ex="false" tool="1" flavor2="8">
       </item>
@@ -73,6 +72,8 @@
       <item path="GameStateManager.cpp" ex="false" tool="1" flavor2="8">
       </item>
       <item path="blockattack.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
       </item>
       <item path="sago/FrameCounter.cpp" ex="false" tool="1" flavor2="8">
         <ccTool>
@@ -130,13 +131,8 @@
         </ccTool>
       </item>
       <item path="sago/SagoSprite.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool>
+        <ccTool flags="0">
           <incDir>
-            <pElem>/usr/include/SFML/Graphics</pElem>
-            <pElem>sago</pElem>
-            <pElem>/usr/include/SFML</pElem>
-            <pElem>/usr/include/SFML/System</pElem>
-            <pElem>/usr/include/SFML/Window</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>

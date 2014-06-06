@@ -32,6 +32,7 @@ class SagoSprite {
 public:
 	SagoSprite(const SagoDataHolder &texHolder, const std::string &texture,const sf::IntRect &initImage,const int animationFrames, const int animationFrameLength);
 	void Draw(sf::RenderWindow &target, sf::Int32 frameTime, float x, float y) const;
+	void SetOrigin(const sf::Vector2i &newOrigin);
 	virtual ~SagoSprite();
 private:
 	SagoSprite(const SagoSprite& base) = delete;

@@ -29,6 +29,7 @@ struct SagoSprite::SagoSpriteData {
 	const sf::Texture* tex;
 	sf::Sprite sprite;
 	sf::IntRect imgCord;
+	sf::Vector2i origin = sf::Vector2i(0,0);
 	int aniFrames = 0;
 	int aniFrameTime = 0;
 };
@@ -52,8 +53,12 @@ void SagoSprite::Draw(sf::RenderWindow &target, sf::Int32 frameTime, float x, fl
 	sf::IntRect rect = data->imgCord;
 	rect.left+=rect.width*((frameTime/data->aniFrameTime)%data->aniFrames);
 	data->sprite.setTextureRect(rect);
-	data->sprite.setPosition(x,y);
+	data->sprite.setPosition(x-data->origin.x,y-data->origin.y);
 	target.draw(data->sprite);
+}
+
+void SagoSprite::SetOrigin(const sf::Vector2i &newOrigin) {
+	data->origin = newOrigin;
 }
 
 }  //namespace sago
