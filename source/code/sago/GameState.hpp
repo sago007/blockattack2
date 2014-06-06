@@ -24,7 +24,9 @@ http://blockattack.sf.net
 #ifndef GAMESTATE_HPP
 #define	GAMESTATE_HPP
 
-#include "sago/SagoCommandQueue.hpp"
+#include "SagoCommandQueue.hpp"
+
+namespace sago {
 
 class GameState {
 public:
@@ -62,6 +64,8 @@ public:
      */
     virtual void UpdateCommandQueue(sago::SagoCommandQueue &inout) = 0;
 };
+
+}
 
 #endif	/* GAMESTATE_HPP */
 

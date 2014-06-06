@@ -25,8 +25,10 @@ http://blockattack.sf.net
 #define	GAMESTATEMANAGER_HPP
 
 #include "GameState.hpp"
-#include "sago/SagoCommandQueue.hpp"
+#include "SagoCommandQueue.hpp"
 #include <memory>
+
+namespace sago {
 
 class GameStateManager {
 public:
@@ -43,6 +45,8 @@ private:
 	struct GameStateManagerData;
 	GameStateManagerData *data;
 };
+
+}
 
 #endif	/* GAMESTATEMANAGER_HPP */
 

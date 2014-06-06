@@ -24,10 +24,10 @@ http://blockattack.sf.net
 #ifndef BLOCKCLIENT_HPP
 #define	BLOCKCLIENT_HPP
 
-#include "GameState.hpp"
+#include "sago/GameState.hpp"
 #include "sago/SagoDataHolder.hpp"
 
-class BlockClient : public GameState {
+class BlockClient : public sago::GameState {
 public:
 	BlockClient(const sago::SagoDataHolder &texHolder);
 	~BlockClient();

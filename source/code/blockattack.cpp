@@ -22,7 +22,7 @@ http://blockattack.sf.net
 */
 
 #include "BlockMenu.hpp"
-#include "GameStateManager.hpp"
+#include "sago/GameStateManager.hpp"
 #include "CommandProcessor.hpp"
 #include "sago/SagoDataHolder.hpp"
 #include "sago/SagoMenu.hpp"
@@ -64,8 +64,8 @@ int main(int argc, const char* argv[])
 	sago::SagoCommandQueue cmdQ;
 	sago::music::SetDataHolder(dataHolder);
 	SetStandardKeyBinds(cmdQ);
-	std::shared_ptr<GameState> menu(new BlockMenu(dataHolder));
-	GameStateManager stateManager;
+	std::shared_ptr<sago::GameState> menu(new BlockMenu(dataHolder));
+	sago::GameStateManager stateManager;
 	stateManager.PushState(menu);
 	sf::RenderWindow window(sf::VideoMode(1024, 768), "Block Attack - Rise of the blocks");
 	sf::Clock clock;  //start the clock

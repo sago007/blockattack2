@@ -24,11 +24,11 @@ http://blockattack.sf.net
 #ifndef COMMANDPROCESSOR_HPP
 #define	COMMANDPROCESSOR_HPP
 
-#include "GameStateManager.hpp"
+#include "sago/GameStateManager.hpp"
 #include "sago/SagoCommandQueue.hpp"
 #include "sago/SagoDataHolder.hpp"
 
-void ProcessCommands(sago::SagoCommandQueue &queue, sago::SagoDataHolder &dh, GameStateManager &m);
+void ProcessCommands(sago::SagoCommandQueue &queue, sago::SagoDataHolder &dh, sago::GameStateManager &m);
 
 #endif	/* COMMANDPROCESSOR_HPP */
 

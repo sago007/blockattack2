@@ -4,6 +4,7 @@
     <df root="." name="0">
       <df name="sago">
         <in>FrameCounter.cpp</in>
+        <in>GameStateManager.cpp</in>
         <in>SagoCommandQueue.cpp</in>
         <in>SagoDataHolder.cpp</in>
         <in>SagoMenu.cpp</in>
@@ -75,6 +76,13 @@
             <pElem>/usr/include/SFML</pElem>
             <pElem>/usr/include/SFML/System</pElem>
             <pElem>/usr/include/SFML/Window</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="sago/GameStateManager.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
             <pElem>.</pElem>
           </incDir>
         </ccTool>

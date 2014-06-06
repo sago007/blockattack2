@@ -24,12 +24,12 @@ http://blockattack.sf.net
 #ifndef BLOCKMENU_HPP
 #define	BLOCKMENU_HPP
 
-#include "GameState.hpp"
+#include "sago/GameState.hpp"
 #include "sago/SagoMenu.hpp"
 #include "sago/SagoDataHolder.hpp"
 #include <vector>
 
-class BlockMenu : public GameState {
+class BlockMenu : public sago::GameState {
 public:
 	BlockMenu(const sago::SagoDataHolder &texHolder);
 	bool IsActive();

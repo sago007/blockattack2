@@ -25,6 +25,8 @@ http://blockattack.sf.net
 
 using namespace std;
 
+namespace sago {
+
 struct GameStateManager::GameStateManagerData {
 	vector<shared_ptr<GameState>  > states;  
 };
@@ -88,3 +90,5 @@ void GameStateManager::UpdateCommandQueue(sago::SagoCommandQueue &inout) {
 		data->states.at(i)->UpdateCommandQueue(inout);
 	}
 }
+
+}  //namespace sago
