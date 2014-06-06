@@ -62,12 +62,8 @@
       <item path="BlockMenu.cpp" ex="false" tool="1" flavor2="8">
       </item>
       <item path="CommandProcessor.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
-        </ccTool>
       </item>
       <item path="GameStateManager.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
-        </ccTool>
       </item>
       <item path="blockattack.cpp" ex="false" tool="1" flavor2="8">
       </item>
@@ -113,14 +109,8 @@
         </ccTool>
       </item>
       <item path="sago/SagoMusicBackground.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool>
+        <ccTool flags="0">
           <incDir>
-            <pElem>sago</pElem>
-            <pElem>/usr/include/SFML/System</pElem>
-            <pElem>/usr/include/SFML</pElem>
-            <pElem>/usr/include/SFML/Window</pElem>
-            <pElem>/usr/include/SFML/Graphics</pElem>
-            <pElem>/usr/include/SFML/Audio</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
