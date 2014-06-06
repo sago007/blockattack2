@@ -60,12 +60,14 @@ public:
 	void Down();
 	void Action(const sago::SagoCommandQueue &queue, std::vector<std::string> &outCommands);
 	void Update(float fDeltaTime, const sago::SagoCommandQueue &input);
+	bool IsOverAButton() const;
 private:
 	void placeButtons();
 	std::vector<SagoMenuButton> buttons;
 	SagoMenuButton exit;
 	sf::Text fontText;
 	size_t marked = 0;
+	bool overAButton = false;
 };
 
 class SagoMenuStack {
@@ -75,6 +77,7 @@ public:
 	void DrawMenu(sf::RenderWindow &target);
 	void Action(const sago::SagoCommandQueue &queue, std::vector<std::string> &outCommands);
 	void Update(float fDeltaTime, const sago::SagoCommandQueue &input);
+	bool IsOverAButton() const;
 	void Up();
 	void Down();
 private:

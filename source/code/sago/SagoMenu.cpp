@@ -128,6 +128,7 @@ void SagoMenu::Action(const sago::SagoCommandQueue &q, std::vector<std::string> 
 
 void SagoMenu::Update(float fDeltaTime, const sago::SagoCommandQueue &input) {
 	if (input.MouseMoved()) {
+		overAButton = false;
 		const sf::Vector2f bSize = sf::Vector2f(600.0f,60.0f);
 		const sf::Vector2i &pos = input.GetMousePosition();
 		for ( size_t i = 0; i < buttons.size(); i++ ) {
@@ -135,6 +136,7 @@ void SagoMenu::Update(float fDeltaTime, const sago::SagoCommandQueue &input) {
 			float y = buttons.at(i).GetY();
 			if ( pos.x > x && x+bSize.x > pos.x && y < pos.y && y+bSize.y > pos.y ) {
 				marked = i;
+				overAButton = true;
 			}
 		}
 		{
@@ -142,9 +144,14 @@ void SagoMenu::Update(float fDeltaTime, const sago::SagoCommandQueue &input) {
 			float y = exit.GetY();
 			if ( pos.x > x && x+bSize.x > pos.x && y < pos.y && y+bSize.y > pos.y ) {
 				marked = buttons.size();
+				overAButton = true;
 			}
 		}
 	}
+}
+
+bool SagoMenu::IsOverAButton() const {
+	return overAButton;
 }
 
 void SagoMenu::Down() {
@@ -218,6 +225,13 @@ void SagoMenuStack::Down() {
 	if (this->menus.size() > 0) {
 		this->menus.back().Down();
 	}		
+}
+
+bool SagoMenuStack::IsOverAButton() const {
+	if (this->menus.size() > 0) {
+		return this->menus.back().IsOverAButton();
+	}	
+	return false;
 }
 
 }
