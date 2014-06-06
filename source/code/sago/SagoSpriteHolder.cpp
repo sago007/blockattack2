@@ -28,6 +28,7 @@ http://blockattack.sf.net
 #include <json-c/json.h>
 #include <iostream>
 #include <string.h>
+#include <boost/algorithm/string/predicate.hpp>
 
 
 //I truely hate the C way of checking for equal. Usually read: "if not X compares to Y then they must be equal"
@@ -158,8 +159,13 @@ void SagoSpriteHolder::ReadSpriteFile(const std::string &filename) {
 void SagoSpriteHolder::ReadSprites() {
 	std::vector<std::string> spritefiles = GetFileList("sprites");
 	for (std::string &item : spritefiles  ) {
-		cout << "Found " << item << endl;
-		ReadSpriteFile(item);
+		if (boost::algorithm::ends_with(item,".sprite")) {
+			cout << "Found " << item << endl;
+			ReadSpriteFile(item);
+		}
+		else {
+			cout << "Ignoreing " << item << endl;
+		}
 	}
 }
 

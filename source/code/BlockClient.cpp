@@ -22,8 +22,29 @@ http://blockattack.sf.net
 */
 
 #include "BlockClient.hpp"
+#include "BlockGame.hpp"
 #include "sago/SagoSpriteHolder.hpp"
 #include <memory>
+
+namespace {
+	void DrawOneBlock(const SingleBlock &b, const sf::Rect<int> &place, int i, int j, const sago::SagoSpriteHolder &spHolder, float fTime, sf::RenderWindow &target) {
+		if (b.type == b.Blue) {
+			 const sago::SagoSprite &mySprite = spHolder.GetSprite("block_blue");
+			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j);
+		}
+	}
+	
+	void DrawBlockGame(const BlockGame &g, const sf::Rect<int> &place, const sago::SagoSpriteHolder &spHolder, float fTime, sf::RenderWindow &target) {
+		const sago::SagoSprite &background = spHolder.GetSprite("boardbackback");
+		background.Draw(target,fTime,place.left-57,place.top-72);
+		const auto &board = g.GetBoard();
+		for (int i=0; i< g.coloms; i++) {
+			for (int j=0;j< g.rows;j++) {
+				DrawOneBlock(board[i][j], place,i,j,spHolder,fTime,target);
+			}
+		}
+ 	}
+}  //anonymous namespace
 
 struct BlockClient::BlockClientData  { 
 	bool active = true;
@@ -33,13 +54,15 @@ struct BlockClient::BlockClientData  {
 	sf::Rect<int> exitButton = sf::Rect<int>(0,0,0,0);
 	float fTime = 0.0;
 	bool mousePressed = true;
+	BlockGame p1;
+	sf::Rect<int> p1palce = sf::Rect<int>(200,150,300,600);
 };
 
 BlockClient::BlockClient(const sago::SagoDataHolder &dHolder) : data(new BlockClientData()) {
 	data->dataHolder = &dHolder;
 	data->sprites = std::shared_ptr<sago::SagoSpriteHolder>(new sago::SagoSpriteHolder(*(data->dataHolder)));
-	data->sprites->ReadSprites();
 	data->exitSprite = &data->sprites->GetSprite("bexit");
+	data->p1.Action(BlockGame::PlaceBlock,0,0,2,"");
 }
 
 BlockClient::~BlockClient() {
@@ -61,6 +84,7 @@ bool BlockClient::IsBlockingUpdate() {
 void BlockClient::Draw(sf::RenderWindow &target) {
 	data->exitButton = sf::Rect<int>(target.getSize().x-150,target.getSize().y-150,target.getSize().x-50,target.getSize().y-50);
 	data->exitSprite->Draw(target,data->fTime,data->exitButton.left,data->exitButton.top);
+	DrawBlockGame(data->p1,data->p1palce,*data->sprites,data->fTime,target);
 }
 
 void BlockClient::Update(float fDeltaTime, const sago::SagoCommandQueue &input) {
