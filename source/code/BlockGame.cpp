@@ -36,4 +36,7 @@ const SingleBlock (&BlockGame::GetBoard() const)[coloms][rows] {
 	return board;
 }
 
-
+void BlockGame::GetCursor(int &x, int &y) const {
+	x = cursorx;
+	y = cursory;
+}

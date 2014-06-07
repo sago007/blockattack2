@@ -50,6 +50,18 @@
 	"frame_time" : 1,
 	"originx" : 57,
 	"originy" : 72
+},
+
+"cursor" : {
+	"texture" : "cursor",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 58,
+	"width" : 108,
+	"number_of_frames" : 2,
+	"frame_time" : 400,
+	"originx" : 4,
+	"originy" : 4
 }
 
 }

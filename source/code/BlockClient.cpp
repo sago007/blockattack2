@@ -36,6 +36,7 @@ namespace {
 	
 	void DrawBlockGame(const BlockGame &g, const sf::Rect<int> &place, const sago::SagoSpriteHolder &spHolder, float fTime, sf::RenderWindow &target) {
 		const sago::SagoSprite &background = spHolder.GetSprite("boardbackback");
+		const sago::SagoSprite &cursor = spHolder.GetSprite("cursor");
 		background.Draw(target,fTime,place.left,place.top);
 		const auto &board = g.GetBoard();
 		for (int i=0; i< g.coloms; i++) {
@@ -43,6 +44,9 @@ namespace {
 				DrawOneBlock(board[i][j], place,i,j,spHolder,fTime,target);
 			}
 		}
+		int cursorx, cursory;
+		g.GetCursor(cursorx,cursory);
+		cursor.Draw(target,fTime,place.left+50*cursorx,place.top-50+50*12-50*cursory);
  	}
 }  //anonymous namespace
 

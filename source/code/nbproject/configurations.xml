@@ -60,8 +60,6 @@
         </makeTool>
       </makefileType>
       <item path="BlockClient.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
-        </ccTool>
       </item>
       <item path="BlockGame.cpp" ex="false" tool="1" flavor2="8">
       </item>
@@ -72,8 +70,6 @@
       <item path="GameStateManager.cpp" ex="false" tool="1" flavor2="8">
       </item>
       <item path="blockattack.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
-        </ccTool>
       </item>
       <item path="sago/FrameCounter.cpp" ex="false" tool="1" flavor2="8">
         <ccTool>

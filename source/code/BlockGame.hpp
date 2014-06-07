@@ -30,11 +30,16 @@ public:
     const SingleBlock (&GetBoard() const)[coloms][rows] ;
 	enum GameState { NotStarted, Started, GameOver, Won, Draw };
 	GameState GetStatus() const;
+	void GetCursor(int &x, int &y) const;
 private:
 	void AdvanceTo(int time2adcance);
 	unsigned int score = 0;
+	unsigned int ticks = 0;
+	bool timetrial = false;
 	SingleBlock board[6][30];
 	GameState status = NotStarted;
+	int cursorx = 2;
+	int cursory = 2;
 };
 
 #endif	/* BLOCKGAME_HPP */
