@@ -42,6 +42,7 @@ private:
 	BlockClient& operator=(const BlockClient& base) = delete;
 	struct BlockClientData;
 	BlockClientData *data;
+	// Actual methods:
 };
 
 #endif	/* BLOCKCLIENT_HPP */

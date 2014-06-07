@@ -45,10 +45,21 @@ namespace {
 		cmdQ.BindKeyCommand("UP","UP");
 		cmdQ.BindKey(sf::Keyboard::Down,"DOWN");
 		cmdQ.BindKeyCommand("DOWN","DOWN");
+		cmdQ.BindKey(sf::Keyboard::Left,"LEFT");
+		cmdQ.BindKey(sf::Keyboard::Right,"RIGHT");
+		cmdQ.BindKey(sf::Keyboard::LShift,"PUSH");
+		cmdQ.BindKey(sf::Keyboard::LControl,"SHIFT");
 		cmdQ.BindKey(sf::Keyboard::Return,"RETURN");
 		cmdQ.BindKeyCommand("RETURN","CONFIRM");
 		cmdQ.BindKey(sf::Keyboard::Escape,"ESC");
 		cmdQ.BindKeyCommand("ESC","BACK");
+		//player 1 keys:
+		cmdQ.BindKeyCommand("UP","NORTH");
+		cmdQ.BindKeyCommand("DOWN","SOUTH");
+		cmdQ.BindKeyCommand("LEFT","WEST");
+		cmdQ.BindKeyCommand("RIGHT","EAST");
+		cmdQ.BindKeyCommand("PUSH","PUSH");
+		cmdQ.BindKeyCommand("SHIFT","SWITCH");
 	}
 }
 
@@ -98,7 +109,7 @@ int main(int argc, const char* argv[])
 		stateManager.Draw(window);
 		fc.Draw(window,frameTime);
 		window.display();
-		usleep(10000);
+		usleep(1000);
 	}
 	PHYSFS_deinit();
 	return 0;

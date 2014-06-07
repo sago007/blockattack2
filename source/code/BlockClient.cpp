@@ -32,6 +32,30 @@ namespace {
 			 const sago::SagoSprite &mySprite = spHolder.GetSprite("block_blue");
 			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j);
 		}
+		if (b.type == b.Green) {
+			 const sago::SagoSprite &mySprite = spHolder.GetSprite("block_green");
+			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j);
+		}
+		if (b.type == b.Grey) {
+			 const sago::SagoSprite &mySprite = spHolder.GetSprite("block_grey");
+			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j);
+		}
+		if (b.type == b.Purple) {
+			 const sago::SagoSprite &mySprite = spHolder.GetSprite("block_purple");
+			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j);
+		}
+		if (b.type == b.Red) {
+			 const sago::SagoSprite &mySprite = spHolder.GetSprite("block_red");
+			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j);
+		}
+		if (b.type == b.Turkish) {
+			 const sago::SagoSprite &mySprite = spHolder.GetSprite("block_turkish");
+			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j);
+		}
+		if (b.type == b.Yellow) {
+			 const sago::SagoSprite &mySprite = spHolder.GetSprite("block_yellow");
+			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j);
+		}
 	}
 	
 	void DrawBlockGame(const BlockGame &g, const sf::Rect<int> &place, const sago::SagoSpriteHolder &spHolder, float fTime, sf::RenderWindow &target) {
@@ -40,7 +64,7 @@ namespace {
 		background.Draw(target,fTime,place.left,place.top);
 		const auto &board = g.GetBoard();
 		for (int i=0; i< g.coloms; i++) {
-			for (int j=0;j< g.rows;j++) {
+			for (int j=0;j< 12;j++) {
 				DrawOneBlock(board[i][j], place,i,j,spHolder,fTime,target);
 			}
 		}
@@ -66,6 +90,7 @@ BlockClient::BlockClient(const sago::SagoDataHolder &dHolder) : data(new BlockCl
 	data->dataHolder = &dHolder;
 	data->sprites = std::shared_ptr<sago::SagoSpriteHolder>(new sago::SagoSpriteHolder(*(data->dataHolder)));
 	data->exitSprite = &data->sprites->GetSprite("bexit");
+	data->p1.Action(BlockGame::UpdateNextRow,0,0,0,"");
 	data->p1.Action(BlockGame::PlaceBlock,0,0,2,"");
 }
 
@@ -98,6 +123,24 @@ void BlockClient::Update(float fDeltaTime, const sago::SagoCommandQueue &input) 
 		if (cmd == "BACK") {
 			this->data->active = false;
 		}
+		if (cmd == "NORTH") {
+			data->p1.Action(BlockGame::Move,0,0,0,"");
+		}
+		if (cmd == "SOUTH") {
+			data->p1.Action(BlockGame::Move,1,0,0,"");
+		}
+		if (cmd == "WEST") {
+			data->p1.Action(BlockGame::Move,2,0,0,"");
+		}
+		if (cmd == "EAST") {
+			data->p1.Action(BlockGame::Move,3,0,0,"");
+		}
+		if (cmd == "SWITCH") {
+			data->p1.Action(BlockGame::Switch,0,0,0,"");
+		}
+		if (cmd == "PUSH") {
+			data->p1.Action(BlockGame::Push,0,0,0,"");
+		}
 	}
 	if (!this->data->mousePressed && sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 		if (data->exitButton.contains(input.GetMousePosition())) {
@@ -106,6 +149,7 @@ void BlockClient::Update(float fDeltaTime, const sago::SagoCommandQueue &input) 
 	}
 	this->data->mousePressed = sf::Mouse::isButtonPressed(sf::Mouse::Left);
 }
+
 void BlockClient::UpdateCommandQueue(sago::SagoCommandQueue &inout) {
 	
 }
