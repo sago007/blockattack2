@@ -40,6 +40,66 @@
 	"frame_time" : 1
 },
 
+"block_green" : {
+	"texture" : "green",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 50,
+	"width" : 50,
+	"number_of_frames" : 1,
+	"frame_time" : 1
+},
+
+"block_grey" : {
+	"texture" : "grey",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 50,
+	"width" : 50,
+	"number_of_frames" : 1,
+	"frame_time" : 1
+},
+
+"block_purple" : {
+	"texture" : "purple",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 50,
+	"width" : 50,
+	"number_of_frames" : 1,
+	"frame_time" : 1
+},
+
+"block_red" : {
+	"texture" : "red",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 50,
+	"width" : 50,
+	"number_of_frames" : 1,
+	"frame_time" : 1
+},
+
+"block_turkish" : {
+	"texture" : "turkish",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 50,
+	"width" : 50,
+	"number_of_frames" : 1,
+	"frame_time" : 1
+},
+
+"block_yellow" : {
+	"texture" : "yellow",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 50,
+	"width" : 50,
+	"number_of_frames" : 1,
+	"frame_time" : 1
+},
+
 "boardbackback" : {
 	"texture" : "boardbackback",
 	"topx" : 0,

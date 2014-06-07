@@ -14,8 +14,14 @@ background.png			qubodup
 bexit.png			qubodup
 blue.png			qubodup
 boardbackback.png		qubodup
-cursor.png				Poul Sander
+cursor.png			Poul Sander
 fallback.png			Poul Sander
+green.png			qubodup
+grey.png			qubodup
+purple.png			qubodup
+red.png				qubodup
+turkish.png			qubodup
+yellow.png			qubodup
 
 /sprites/
 blockattack.sprite		Poul Sander
