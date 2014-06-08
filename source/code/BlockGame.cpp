@@ -117,6 +117,57 @@ bool BlockGame::popGarbage(int &width, int &height, int &type) {
 	return true;
 }
 
+void BlockGame::setPlayerWon()
+{
+	if (status == BlockGame::Running) {
+		status = BlockGame::Won;
+	}
+}
+
+void BlockGame::setDraw()
+{
+	if (status == BlockGame::Running) {
+		status = BlockGame::Draw;
+	}
+}
+
+//Test if LineNr is an empty line, returns false otherwise.
+bool BlockGame::LineEmpty(int lineNr)
+{
+	bool empty = true;
+	for (int i = 0; i <coloms; i++) {
+		if (board[i][lineNr].type != SingleBlock::Blank) {
+			empty = false;
+		}
+	}
+	return empty;
+}
+
+//Test if the entire board is empty (used for Puzzles)
+bool BlockGame::BoardEmpty()
+{
+	bool empty = true;
+	for (int i=0; i<coloms; i++) {
+		for (int j=0; j<14; j++) {
+			if (board[i][j].type != SingleBlock::Blank) {
+				empty = false;
+			}
+		}
+	}
+	return empty;
+}
+
+bool BlockGame::hasStaticContent() {
+	for (int i=0; i<coloms; i++) {
+		for (int j=1; j<13; j++) {
+			if (board[i][j].clearing || board[i][j].falling ) {
+				return true;			//They are static
+			}
+		}
+	}
+	return false;					//Return false if no static object found
+}
+
 BlockGame::GameState BlockGame::GetStatus() const {
 	return status;
 }
@@ -177,7 +228,145 @@ void BlockGame::PushLine() {
 }
 
 void BlockGame::ReduceStuff() {
-	
+	int howMuchHang = (ticks - frameLength*hangTicks)/frameLength;
+	if (howMuchHang>0)
+	{
+		for (int i=0; i<coloms; i++) {
+			for (int j=0; j<rows; j++) {
+				if (board[i][j].hanging) {
+					int hangNumber = board[i][j].hang;
+					if (hangNumber<=howMuchHang) {
+						board[i][j].hanging = false;
+						board[i][j].hang = 0;
+					}
+					else {
+						board[i][j].hang-=howMuchHang;
+					}
+				}
+				if (board[i][j].clearing) {
+					int hangNumber = board[i][j].hang;
+					if (hangNumber<=howMuchHang) {
+						//The blocks must be cleared
+						board[i][j].hang = 0;
+					}
+					else
+					{
+						board[i][j].hang-=howMuchHang;
+					}
+				}
+			}
+		}
+	}
+	hangTicks+=howMuchHang;
+}
+
+bool BlockGame::CreateGarbage(int wide, int height)
+{
+	if (wide>coloms) wide = coloms;
+	if (height>12) height = 12;
+	int startPosition = 12;
+	while ((!(LineEmpty(startPosition))) || (startPosition == 29)) {
+		startPosition++;
+	}
+	if (startPosition == 29) return false; //failed to place blocks
+	if (29-startPosition<height) return false;	//not enough space
+	int start; 
+	int end;
+	if (bGarbageFallLeft) {
+		start=0;
+		end=start+wide;
+	}
+	else {
+		start=6-wide;
+		end = 6;
+	}
+	for (int i = startPosition; i <startPosition+height; i++) {
+		for (int j = start; j < end; j++)
+		{
+			board[j][i].type = SingleBlock::GarbageColor;
+			board[j][i].match = nextGarbageNumber;
+		}
+	}
+	nextGarbageNumber++;
+	if (nextGarbageNumber>999999) nextGarbageNumber = 1;
+	bGarbageFallLeft = !(bGarbageFallLeft);
+	return true;
+}
+
+bool BlockGame::CreateGreyGarbage()
+{
+		int startPosition = 12;
+		while ((!(LineEmpty(startPosition))) || (startPosition == 29))
+			startPosition++;
+		if (startPosition == 29) return false; //failed to place blocks
+		if (29-startPosition<1) return false;	//not enough space
+		int start, end;
+		{
+			start=0;
+			end=6;
+		}
+		for (int i = startPosition; i <startPosition+1; i++) {
+			for (int j = start; j < end; j++) {
+				board[j][i].type = SingleBlock::GarbageGray;
+				board[j][i].match = nextGarbageNumber;
+			}
+		}
+		nextGarbageNumber++;
+		if (nextGarbageNumber>999999) {
+			nextGarbageNumber = 1;
+		}
+		return true;
+}
+
+//Clears garbage, must take one the lower left corner!
+int BlockGame::GarbageClearer(int x, int y, int number, bool aLineToClear, int chain)
+{
+	if ((board[x][y]).match != number) return -1;
+	if (aLineToClear) {
+		board[x][y].type = static_cast<SingleBlock::BlockType>(1 + (rand() % 6) );
+		board[x][y].hanging = true;
+		board[x][y].hang = hangTime;
+		board[x][y].chainId = chain;
+	}
+	garbageToBeCleared[x][y] = false;
+	GarbageClearer(x+1, y, number, aLineToClear, chain);
+	GarbageClearer(x, y+1, number, false, chain);
+	return 1;
+}
+
+//Marks garbage that must be cleared
+int BlockGame::GarbageMarker(int x, int y)
+{
+	if ((x>5)||(x<0)||(y<0)||(y>29)) return -1;
+	if ((board[x][y].GarbageColor == board[x][y].GarbageColor )&&(garbageToBeCleared[x][y] == false)) {
+		garbageToBeCleared[x][y] = true;
+		//Float fill
+		GarbageMarker(x-1, y);
+		GarbageMarker(x+1, y);
+		GarbageMarker(x, y-1);
+		GarbageMarker(x, y+1);
+	}
+	return 1;
+}
+
+int BlockGame::FirstGarbageMarker(int x, int y)
+{
+	if ((x>5)||(x<0)||(y<0)||(y>29)) return -1;
+	if ((board[x][y].GarbageColor == board[x][y].GarbageGray)&&(garbageToBeCleared[x][y] == false))
+	{
+		for (int i=0; i<coloms; i++)
+			garbageToBeCleared[i][y] = true;
+	}
+	else if ((board[x][y].GarbageColor == board[x][y].GarbageColor)&&(garbageToBeCleared[x][y] == false))
+	{
+		garbageToBeCleared[x][y] = true;
+		//Float fill
+		GarbageMarker(x-1, y);
+		GarbageMarker(x+1, y);
+		GarbageMarker(x, y-1);
+		GarbageMarker(x, y+1);
+	}
+	return 1;
 }
 
 void BlockGame::SetNextLine() {

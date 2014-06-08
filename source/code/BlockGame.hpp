@@ -16,8 +16,10 @@ struct SingleBlock {
 	BlockType type = BlockType::Blank; 
 	unsigned int chainId = 0;  //What chain group does we blong to?
 	unsigned int match = 0;  //tells what garbage belongs together.
+	unsigned int hang = 0;
 	bool falling = false;  //Is the block falling?
 	bool clearing = false;  //Is the block being cleared?
+	bool hanging = false;  //Is the block hanging (after harbage clear)
 };
 
 class BlockGame {
@@ -27,6 +29,9 @@ public:
 	static const int bsize = 50; //Block size in pixels
 	static const int maxNumberOfChains = 100;
 	static const int garbageStackSize = 10;
+	static const int frameLength = 50;
+	static const int hangTime = 40;
+	static const int fallTime = 20;
 public:
 	BlockGame();
 	enum ActionType { AdcanceTime, Move, PlaceBlock, Switch, Push, UpdateNextRow};
@@ -45,6 +50,16 @@ private:
 	void emptyGarbageStack();
 	bool pushGarbage(int width, int height, int type);
 	bool popGarbage(int &width, int &height, int &type);
+	void setPlayerWon();
+	void setDraw();
+	bool LineEmpty(int lineNr);
+	bool BoardEmpty();
+	bool hasStaticContent();
+	bool CreateGarbage(int wide, int height);
+	bool CreateGreyGarbage();
+	int GarbageClearer(int x, int y, int number, bool aLineToClear, int chain);
+	int GarbageMarker(int x, int y);
+	int FirstGarbageMarker(int x, int y);
 	void AdvanceTo(int time2advance);
 	void ClearBlocks();
 	void SetGameOver();
@@ -62,6 +77,7 @@ private:
 	bool timetrial = false;
 	SingleBlock board[coloms][rows];
 	SingleBlock nextRow[coloms];
+	bool garbageToBeCleared[coloms][rows];
 	GameState status = NotStarted;
 	int cursorx = 2;
 	int cursory = 2;
@@ -71,11 +87,14 @@ private:
 	bool puzzleMode = false;
 	bool bGameOver = false;
 	bool bNearDeath = true;
+	bool bGarbageFallLeft = false;
 	int stop = 0;
 	unsigned int nrStops = 0;
 	unsigned int nrFellDown = 0;
 	unsigned int speedLevel = 1;
+	unsigned int hangTicks = 0;
 	int nrPushedPixel = 0;
+	int nextGarbageNumber = 1;
 	double speed = 1.0;
 	double baseSpeed = 1.0;
 	int chain = 0; 
