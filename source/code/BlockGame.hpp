@@ -25,6 +25,8 @@ public:
 	static const int coloms = 6;
 	static const int rows = 30;
 	static const int bsize = 50; //Block size in pixels
+	static const int maxNumberOfChains = 100;
+	static const int garbageStackSize = 10;
 public:
 	BlockGame();
 	enum ActionType { AdcanceTime, Move, PlaceBlock, Switch, Push, UpdateNextRow};
@@ -38,8 +40,14 @@ public:
 private:
 	sf::Uint32 nextRandomNumber = 0;
 	sf::Uint16 rand2();
+	int firstUnusedChain();
+	void setGameSpeed(int globalSpeedLevel);
+	void emptyGarbageStack();
+	bool pushGarbage(int width, int height, int type);
+	bool popGarbage(int &width, int &height, int &type);
 	void AdvanceTo(int time2advance);
 	void ClearBlocks();
+	void SetGameOver();
 	void SwitchAtCursor();
 	void PushLine();
 	void PushPixels();
@@ -70,6 +78,11 @@ private:
 	int nrPushedPixel = 0;
 	double speed = 1.0;
 	double baseSpeed = 1.0;
+	int chain = 0; 
+	int chainSize[maxNumberOfChains]{}; //Contains the chains
+	bool chainUsed[maxNumberOfChains]{};   //True if the chain is used
+	int garbageStack[garbageStackSize][3]{}; //A garbage stack with space for 10 garbage blocks. 0=x,1=y,2=type
+	int garbageStackUsed = 0;
 };
 
 #endif	/* BLOCKGAME_HPP */

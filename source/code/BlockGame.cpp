@@ -54,6 +54,69 @@ sf::Uint16 BlockGame::rand2()
 	return ((sf::Uint16)(nextRandomNumber/65536)) % 32768;
 }
 
+int BlockGame::firstUnusedChain() {
+	bool found=false;
+	int i = 0;
+	while (!found && i+1 < maxNumberOfChains) {
+		if (!chainUsed[++i]) found=true;
+	}
+	return i;
+}
+
+void BlockGame::setGameSpeed(int globalSpeedLevel)
+{
+	switch (globalSpeedLevel)
+	{
+	case 0:
+		baseSpeed=0.5;
+		break;
+	case 1:
+		baseSpeed=0.4;
+		break;
+	case 2:
+		baseSpeed=0.3;
+		break;
+	case 3:
+		baseSpeed=0.25;
+		break;
+	case 4:
+		baseSpeed=0.2;
+		break;
+	default:
+		baseSpeed=0.15;
+		break;
+	};
+}
+
+void BlockGame::emptyGarbageStack() {
+	for (int i=0; i<10; i++) {
+		for (int j=0; j<3; j++) {
+			garbageStack[i][j] = 0;
+		}
+	}
+	garbageStackUsed = 0;
+}
+
+bool BlockGame::pushGarbage(int width, int height, int type) {
+	if (garbageStackUsed>=garbageStackSize)
+		return false;
+	garbageStack[garbageStackUsed][0]=width;
+	garbageStack[garbageStackUsed][1]=height;
+	garbageStack[garbageStackUsed][2]=type;
+	garbageStackUsed++;
+	return true;
+}
+
+bool BlockGame::popGarbage(int &width, int &height, int &type) {
+	if (garbageStackUsed<1)
+		return false;
+	garbageStackUsed--;
+	width=garbageStack[garbageStackUsed][0];
+	height=garbageStack[garbageStackUsed][1];
+	type=garbageStack[garbageStackUsed][2];
+	return true;
+}
+
 BlockGame::GameState BlockGame::GetStatus() const {
 	return status;
 }
@@ -77,6 +140,9 @@ int BlockGame::GetPixels() const {
 
 
 void BlockGame::SwitchAtCursor() {
+	if (status != BlockGame::Running) {
+		return;
+	}
 	SingleBlock leftBlock = board[cursorx][cursory];
 	SingleBlock rightBlock = board[cursorx+1][cursory];
 	if (leftBlock.type > SingleBlock::Grey || rightBlock.type > SingleBlock::Grey ) return;
@@ -87,6 +153,9 @@ void BlockGame::SwitchAtCursor() {
 }
 
 void BlockGame::PushLine() {
+	if (status != BlockGame::Running) {
+		return;
+	}
 	for (int i = 0; i < coloms; i++) {
 		for (int j = rows-1; j > 0; j--) {
 			board[i][j] = board[i][j-1];
@@ -95,6 +164,16 @@ void BlockGame::PushLine() {
 	}
 	SetNextLine();
 	score++;
+	if ((TowerHeight>12) && (!puzzleMode)&&(!bGameOver)&&(chain==0)) {
+		/*if ((!vsMode)&&(theTopScoresEndless.isHighScore(score))&&(!AI_Enabled))
+		{
+			if (SoundEnabled)Mix_PlayChannel(1, applause, 0);
+			theTopScoresEndless.addScore(name, score);
+			if(verboseLevel)
+				cout << "New high score!" << endl;
+		}*/
+		SetGameOver();
+	}
 }
 
 void BlockGame::ReduceStuff() {
@@ -165,6 +244,11 @@ void BlockGame::PushPixels() {
 	if (pixels>bsize) {
 		pixels=0;
 	}
+}
+
+void BlockGame::SetGameOver() {
+	status = BlockGame::GameOver;
+	bGameOver = true;
 }
 
 void BlockGame::ClearBlocks() {
