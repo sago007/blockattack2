@@ -85,10 +85,88 @@ void BlockGame::PushLine() {
 		board[i][0] = nextRow[i];
 	}
 	SetNextLine();
+	score++;
 }
 
 void BlockGame::SetNextLine() {
 	for (int i = 0; i < coloms; i++) {
 		nextRow[i].type = static_cast<SingleBlock::BlockType>(1+(rand2()%6));
+	}
+}
+
+bool BlockGame::BoardEmpty() const {
+	bool empty = true;
+	for (int i=0; i<coloms; i++) {
+		for (int j=1; j<rows; j++) {
+			if (board[i][j].type != SingleBlock::Blank) {
+				empty = false;
+			}
+		}
+	}
+	return empty;
+}
+
+void BlockGame::FindTowerHeight()
+{
+	/*
+	 * Old implementation, used until I find the bug in the other.
+	 * This function has a bug in stage clear! if an empty line appears.
+	 */
+	prevTowerHeight = TowerHeight;
+	bool found = false;
+	TowerHeight = 0;
+	while (!found && TowerHeight < rows)
+	{
+		found = true;
+		for (int j=0; j<coloms; j++) {
+			if (board[j][TowerHeight].type != SingleBlock::Blank) {
+				found = false;
+			}
+		}
+		TowerHeight++;
+	}
+	TowerHeight--;
+}
+
+void BlockGame::PushPixels() {
+	nrPushedPixel++;
+	if ((pixels < bsize) && TowerHeight<13)
+	{
+		pixels++;
+	}
+	else
+		PushLine();
+	if (pixels>bsize)
+		pixels=0;
+}
+
+void BlockGame::AdvanceTo(const int time2advance) {
+	FindTowerHeight();
+	if ((TowerHeight>12)&&(prevTowerHeight<13)&&(!puzzleMode)) {
+		//if (SoundEnabled) Mix_PlayChannel(1, heartBeat, 0);
+		stop+=1000;
+	}
+	if ((TowerHeight>12)&&(!puzzleMode)&&(status == Running))
+	{
+		bNearDeath = true;
+	}
+	while (ticks>nrStops*40) {
+	//Increase stops, till we reach nowTime
+		if (stop>0) {
+			stop = stop-20;
+			if (stop<=0) {
+				nrPushedPixel=(int)((ticks)/(1000.0*speed));
+			}
+		}
+		if (stop<0) {
+			stop = 0;
+		}
+		nrStops++;
+	}
+	
+	if ((ticks>20000*speedLevel)&&(speedLevel <99) && (status == Running)){
+		speed = (baseSpeed*0.9)/((double)speedLevel*0.5);
+		speedLevel++;
+		nrPushedPixel=(int)((double)(ticks)/(1000.0*speed));
 	}
 }
