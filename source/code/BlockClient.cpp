@@ -27,46 +27,57 @@ http://blockattack.sf.net
 #include <memory>
 
 namespace {
-	void DrawOneBlock(const SingleBlock &b, const sf::Rect<int> &place, int i, int j, const sago::SagoSpriteHolder &spHolder, float fTime, sf::RenderWindow &target) {
+	void DrawOneBlock(const SingleBlock &b, const sf::Rect<int> &place, int i, int j, 
+		const sago::SagoSpriteHolder &spHolder, float fTime, int pixels, sf::RenderWindow &target) {
 		if (b.type == b.Blue) {
 			 const sago::SagoSprite &mySprite = spHolder.GetSprite("block_blue");
-			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j);
+			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j-pixels);
 		}
 		if (b.type == b.Green) {
 			 const sago::SagoSprite &mySprite = spHolder.GetSprite("block_green");
-			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j);
+			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j-pixels);
 		}
 		if (b.type == b.Grey) {
 			 const sago::SagoSprite &mySprite = spHolder.GetSprite("block_grey");
-			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j);
+			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j-pixels);
 		}
 		if (b.type == b.Purple) {
 			 const sago::SagoSprite &mySprite = spHolder.GetSprite("block_purple");
-			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j);
+			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j-pixels);
 		}
 		if (b.type == b.Red) {
 			 const sago::SagoSprite &mySprite = spHolder.GetSprite("block_red");
-			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j);
+			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j-pixels);
 		}
 		if (b.type == b.Turkish) {
 			 const sago::SagoSprite &mySprite = spHolder.GetSprite("block_turkish");
-			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j);
+			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j-pixels);
 		}
 		if (b.type == b.Yellow) {
 			 const sago::SagoSprite &mySprite = spHolder.GetSprite("block_yellow");
-			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j);
+			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j-pixels);
+		}
+		if (j == -1) {
+			const sago::SagoSprite &mySprite = spHolder.GetSprite("block_trans");
+			mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j-pixels);
 		}
 	}
 	
 	void DrawBlockGame(const BlockGame &g, const sf::Rect<int> &place, const sago::SagoSpriteHolder &spHolder, float fTime, sf::RenderWindow &target) {
 		const sago::SagoSprite &background = spHolder.GetSprite("boardbackback");
+		const sago::SagoSprite &backgroundinner = spHolder.GetSprite("backboard");
 		const sago::SagoSprite &cursor = spHolder.GetSprite("cursor");
 		background.Draw(target,fTime,place.left,place.top);
+		backgroundinner.Draw(target,fTime,place.left,place.top);
 		const auto &board = g.GetBoard();
+		const auto &nextrow = g.GetNextLine();
 		for (int i=0; i< g.coloms; i++) {
 			for (int j=0;j< 12;j++) {
-				DrawOneBlock(board[i][j], place,i,j,spHolder,fTime,target);
+				DrawOneBlock(board[i][j], place,i,j,spHolder,fTime,g.GetPixels(), target);
 			}
+		}
+		for (int i=0;i < g.coloms; i++) {
+			DrawOneBlock(nextrow[i], place,i,-1,spHolder,fTime,g.GetPixels(), target);
 		}
 		int cursorx, cursory;
 		g.GetCursor(cursorx,cursory);
@@ -84,6 +95,7 @@ struct BlockClient::BlockClientData  {
 	bool mousePressed = true;
 	BlockGame p1;
 	sf::Rect<int> p1palce = sf::Rect<int>(200,150,300,600);
+	float p1UpdateTime = 0.0;
 };
 
 BlockClient::BlockClient(const sago::SagoDataHolder &dHolder) : data(new BlockClientData()) {
@@ -118,6 +130,10 @@ void BlockClient::Draw(sf::RenderWindow &target) {
 
 void BlockClient::Update(float fDeltaTime, const sago::SagoCommandQueue &input) {
 	data->fTime += fDeltaTime;
+	if ( data->p1UpdateTime + 20.0f < data->fTime) {
+		data->p1UpdateTime = data->fTime;
+		data->p1.Action(BlockGame::AdcanceTime,data->p1UpdateTime,0,0,"");
+	}
 	for (size_t i = 0; i < input.GetCommandQueue().size();i++) {
 		std::string cmd = input.GetCommandQueue().at(i);
 		if (cmd == "BACK") {

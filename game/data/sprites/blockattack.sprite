@@ -10,6 +10,16 @@
 	"frame_time" : 1
 },
 
+"backboard" :  {
+	"texture" : "backboard",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 600,
+	"width" : 300,
+	"number_of_frames" : 1,
+	"frame_time" : 1
+},
+
 "background" :  {
 	"texture" : "background",
 	"topx" : 0,
@@ -72,6 +82,16 @@
 
 "block_red" : {
 	"texture" : "red",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 50,
+	"width" : 50,
+	"number_of_frames" : 1,
+	"frame_time" : 1
+},
+
+"block_trans" : {
+	"texture" : "transover",
 	"topx" : 0,
 	"topy" : 0,
 	"height" : 50,

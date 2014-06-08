@@ -14,6 +14,7 @@ BlockGame::BlockGame() {
 void BlockGame::Action(ActionType type, int param_int1, int param_int2, int param_int3, const std::string &param_s) {
 	switch (type) {
 		case ActionType::AdcanceTime:
+			AdvanceTo(param_int1);
 			break;
 		case ActionType::Switch:
 			SwitchAtCursor();
@@ -61,9 +62,17 @@ const SingleBlock (&BlockGame::GetBoard() const)[coloms][rows] {
 	return board;
 }
 
+const SingleBlock (&BlockGame::GetNextLine() const)[coloms] {
+	return nextRow;
+}
+
 void BlockGame::GetCursor(int &x, int &y) const {
 	x = cursorx;
 	y = cursory;
+}
+
+int BlockGame::GetPixels() const {
+	return pixels;
 }
 
 
@@ -88,10 +97,26 @@ void BlockGame::PushLine() {
 	score++;
 }
 
+void BlockGame::ReduceStuff() {
+	
+}
+
 void BlockGame::SetNextLine() {
 	for (int i = 0; i < coloms; i++) {
 		nextRow[i].type = static_cast<SingleBlock::BlockType>(1+(rand2()%6));
 	}
+}
+
+void BlockGame::FallDown() {
+	for (int i = 0; i < coloms; i++) {
+		for (int j=0; j< rows-1; j++) {
+			if (board[i][j].type == SingleBlock::Blank && board[i][j+1].falling) {
+				board[i][j] = board[i][j+1];
+				board[i][j].type = SingleBlock::Blank;
+			}
+		}
+	}
+	nrFellDown++;
 }
 
 bool BlockGame::BoardEmpty() const {
@@ -129,18 +154,33 @@ void BlockGame::FindTowerHeight()
 }
 
 void BlockGame::PushPixels() {
+	std::cerr << "Pushed pixel" << std::endl;
 	nrPushedPixel++;
-	if ((pixels < bsize) && TowerHeight<13)
-	{
+	if ((pixels < bsize) && TowerHeight<13) {
 		pixels++;
 	}
-	else
+	else {
 		PushLine();
-	if (pixels>bsize)
+	}
+	if (pixels>bsize) {
 		pixels=0;
+	}
+}
+
+void BlockGame::ClearBlocks() {
+	bool toBeCleared[coloms][rows];
 }
 
 void BlockGame::AdvanceTo(const int time2advance) {
+	if (status == BlockGame::NotStarted) {
+		if (time2advance > gameStatedAt) {
+			status = BlockGame::Running;
+			std::cout << "Game started" << std::endl;
+		}
+	}
+	if (status == BlockGame::Running) {
+		ticks = time2advance-gameStatedAt;
+	}
 	FindTowerHeight();
 	if ((TowerHeight>12)&&(prevTowerHeight<13)&&(!puzzleMode)) {
 		//if (SoundEnabled) Mix_PlayChannel(1, heartBeat, 0);
@@ -168,5 +208,13 @@ void BlockGame::AdvanceTo(const int time2advance) {
 		speed = (baseSpeed*0.9)/((double)speedLevel*0.5);
 		speedLevel++;
 		nrPushedPixel=(int)((double)(ticks)/(1000.0*speed));
+	}
+	if ((ticks>nrPushedPixel*1000*speed) && (!bGameOver)&&(!stop)) {
+		while ((ticks>nrPushedPixel*1000*speed)&&(!(puzzleMode))) {
+			PushPixels();
+		}
+	}
+	if (status == Running) {
+		ClearBlocks();
 	}
 }

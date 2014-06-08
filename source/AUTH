@@ -10,6 +10,7 @@ FreeSerif.ttf			Free Software Foundation
 PenguinAttack.ttf		Dustin Norlander - GPLv2
 
 /textures/
+backboard.png			qubodup
 background.png			qubodup
 bexit.png			qubodup
 blue.png			qubodup
@@ -20,6 +21,7 @@ green.png			qubodup
 grey.png			qubodup
 purple.png			qubodup
 red.png				qubodup
+transover.png			Poul Sander
 turkish.png			qubodup
 yellow.png			qubodup
 
