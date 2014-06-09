@@ -442,6 +442,248 @@ void BlockGame::SetGameOver() {
 
 void BlockGame::ClearBlocks() {
 	bool toBeCleared[coloms][rows];
+	
+	SingleBlock::BlockType previus=SingleBlock::Blank; //the last block checked
+	int combo=0;
+	for (int i=0; i<coloms; i++) {
+		for (int j=0; j<rows; j++){
+			toBeCleared[i][j] = false;
+			garbageToBeCleared[i][j] = false;
+		}
+	}
+	for (int i=0; i<coloms; i++) {
+		bool faaling = false;
+		for (int j=0; j<rows; j++) {
+			if ((faaling)&&(board[i][j].type>SingleBlock::Blank)&&(board[i][j].type <= SingleBlock::Grey && !board[i][j].clearing && !board[i][j].clearing && !board[i][j].hanging)) {
+				board[i][j].falling = true;
+			}
+			if ((!faaling)&&(board[i][j].falling)) {
+				board[i][j].falling = false;
+			}
+			if (!(board[i][j].type != SingleBlock::Blank && board[i][j].chainId > 0) ) {
+				faaling=true;
+			}
+			if (board[i][j].type == SingleBlock::GarbageColor || board[i][j].type == SingleBlock::GarbageGray || board[i][j].hanging) {
+				faaling = false;
+			}
+		}
+	}
+	for (int i=0; i<coloms; i++) {
+		previus = SingleBlock::Blank;
+		combo=0;
+		for (int j=0; j<rows; j++) {
+			if ((board[i][j].type != SingleBlock::Blank)&&(board[i][j].type <= SingleBlock::GarbageGray && !board[i][j].clearing && !board[i][j].clearing && !board[i][j].hanging)) {
+				if (board[i][j].type == previus) {
+					combo++;
+				}
+				else {
+					if (combo>2) {
+						for (int k = j-combo; k<j; k++)
+						{
+							toBeCleared[i][k] = true;
+						}
+					}
+					combo=1;
+					previus = board[i][j].type;
+				}
+			} //if board
+			else {
+				if (combo>2) {
+					for (int k = j-combo; k<j; k++)
+					{
+						toBeCleared[i][k] = true;
+					}
+				}
+				combo = 0;
+				previus = SingleBlock::Blank;
+			}
+
+		} //for j
+	} //for i
+	
+	combo = 0;
+	chain = 0;
+	for (int i=0; i<coloms; i++) {
+		for (int j=0; j<rows; j++)
+		{
+			//Clears blocks marked for clearing
+			SingleBlock temp = board[i][j];
+			if (temp.clearing) {
+				if (temp.hang <= 0) {
+					if (chainSize[chain]<chainSize[board[i][j].chainId])
+						chain = board[i][j].chainId;
+
+					//theBallManeger.addBall(topx+40+i*bsize, topy+bsize*12-j*bsize, true, board[i][j]%10);
+					//theBallManeger.addBall(topx+i*bsize, topy+bsize*12-j*bsize, false, board[i][j]%10);
+					//theExplosionManeger.addExplosion(topx-10+i*bsize, topy+bsize*12-10-j*bsize);
+					board[i][j].type = SingleBlock::TempState;
+				}
+			}
+		}
+	}
+	for (int i=0; i<coloms; i++) {
+		bool setChain=false;
+		for (int j=0; j<rows; j++) {
+			if (board[i][j].type==SingleBlock::Blank) {
+				setChain=false;
+			}
+			if (board[i][j].type==SingleBlock::TempState) {
+				board[i][j].type=SingleBlock::Blank;
+				setChain=true;
+				//if (SoundEnabled)Mix_PlayChannel(0, boing, 0);
+			}
+			if (board[i][j].type !=SingleBlock::Blank) {
+				if ( setChain && board[i][j].type != SingleBlock::GarbageColor && board[i][j].type != SingleBlock::GarbageGray) {
+					board[i][j].chainId = chain;
+					//somethingsGottaFall = true;
+				}
+			}
+		}
+	}
+	
+	combo=0;
+	for (int j=0; j<rows; j++)
+	{
+		previus=SingleBlock::Blank;
+		combo=0;
+		for (int i=0; i<coloms; i++)
+		{
+			if ((board[i][j].type != SingleBlock::Blank)&&(board[i][j].type <= SingleBlock::GarbageGray && !board[i][j].clearing && !board[i][j].clearing && !board[i][j].hanging))	{
+				if (board[i][j].type == previus) {
+					combo++;
+				}
+				else {
+					if (combo>2) {
+						for (int k = i-combo; k<i; k++)
+						{
+							toBeCleared[k][j] = true;
+						}
+					}
+					combo=1;
+					previus = board[i][j].type;
+				}
+			} //if board
+			else
+			{
+				if (combo>2)
+					for (int k = i-combo; k<i; k++)
+					{
+						toBeCleared[k][j] = true;
+					}
+				combo = 0;
+				previus = SingleBlock::Blank;
+			}
+
+		} //for j
+	} //for i
+	
+	combo = 0;
+	chain = 0;
+	int grey = 0;
+	for (int i=0; i<coloms; i++) {
+		for (int j=0; j<rows; j++) {
+			if (toBeCleared[i][j]) {
+				//see if any garbage is around:
+				FirstGarbageMarker(i-1, j);
+				FirstGarbageMarker(i+1, j);
+				FirstGarbageMarker(i, j-1);
+				FirstGarbageMarker(i, j+1);
+				//that is checked now :-)
+				if (board[i][j].type == SingleBlock::Grey) {
+					grey++;
+				}
+				//if ((vsMode) && (grey>2) && (board[j][i]%10000000==6))
+				//	garbageTarget->CreateGreyGarbage();
+				if ((board[i][j].type != SingleBlock::Blank)&&(board[i][j].type <= SingleBlock::GarbageGray && !board[i][j].clearing && !board[i][j].clearing && !board[i][j].hanging)) {
+					board[i][j].hang = 10*fallTime;
+					board[i][j].clearing = true;
+				}
+
+				if (chainSize[board[i][j].chainId]>chainSize[chain]) {
+					chain=board[i][j].chainId;
+				}
+				combo++;
+				stop+=140*combo;
+				score +=10;
+				if (combo>3) {
+					score+=3*combo; //More points if more cleared simontanously
+				}
+			}
+		}
+	}
+	score+=chainSize[chain]*100;
+	if (chain==0)
+	{
+		chain=firstUnusedChain();
+		chainSize[chain]=0;
+		chainUsed[chain]=true;
+	}
+	chainSize[chain]++;
+	for (int i=0; i<coloms; i++) {
+		for (int j=0; j<rows; j++)
+		{
+			if (toBeCleared[i][j]) {
+				board[i][j].chainId = chain;
+			}
+		}
+	}
+
+	{
+		//This is here we add text to screen!
+		bool dead = false;
+		for (int i=0; i<coloms; i++) {
+			for (int j=rows-1; j>=0; j--) {
+				if (toBeCleared[i][j]) {
+					if (!dead)
+					{
+						//dead=true;
+						//string tempS = itoa(chainSize[chain]);
+						//if (chainSize[chain]>1)
+						//	theTextManeger.addText(topx-10+j*bsize, topy+12*bsize-i*bsize, tempS, 1000);
+					}
+				}
+			}
+		}
+	} //This was there text was added
+	
+	
+	//Add create garbage here!
+	
+	for (int i=0; i<coloms; i++) {
+		for (int j=0; j<rows; j++) {
+			if (garbageToBeCleared[i][j])
+			{
+				GarbageClearer(i, j, board[i][j].match, true, chain); //Clears the blocks and all blocks connected to it.
+			}
+		}
+	}
+	
+	chain=0;
+
+	//Break chains (if a block is stable it is reset to (chain == 0)):
+	for (int i=0; i<coloms; i++) {
+		bool faaling = false;  //In the beginning we are NOT falling
+		for (int j=0; j<rows; j++)
+		{
+			if ( faaling && board[i][j].type > SingleBlock::Blank && board[i][j].type <= SingleBlock::Grey ) {
+				board[i][j].falling = true;
+			}
+			if ( !faaling && board[i][j].falling)
+				board[i][j].falling = false;
+			if ((!faaling)&&(board[i][j].type != SingleBlock::Blank)&&(board[i][j].chainId > 0)&&(!board[i][j].clearing)&&(!board[i][j].hanging)) {
+				if (chainSize[board[i][j].chainId]>chainSize[chain]) {
+					chain=board[i][j].chainId;
+				}
+				board[i][j].chainId = 0;
+			}
+			if (!( board[i][j].type>SingleBlock::Blank && board[i][j].type<=SingleBlock::Grey && !board[i][j].clearing && !board[i][j].falling && !board[i][j].hanging )  ) {
+				faaling=true;
+			}
+			if (board[i][j].type == SingleBlock::GarbageColor || board[i][j].hanging || board[i][j].clearing) {
+				faaling = false;
+			}
+		}
+	}
 }
 
 void BlockGame::AdvanceTo(const int time2advance) {
@@ -482,8 +724,8 @@ void BlockGame::AdvanceTo(const int time2advance) {
 		speedLevel++;
 		nrPushedPixel=(int)((double)(ticks)/(1000.0*speed));
 	}
-	if ((ticks>nrPushedPixel*1000*speed) && (!bGameOver)&&(!stop)) {
-		while ((ticks>nrPushedPixel*1000*speed)&&(!(puzzleMode))) {
+	if ((ticks>nrPushedPixel*1000*speed) && (status == BlockGame::Running) && (!stop)) {
+		while ( (ticks>nrPushedPixel*1000*speed) && (!(puzzleMode))) {
 			PushPixels();
 		}
 	}

@@ -12,7 +12,7 @@
 #include <SFML/Config.hpp>
 
 struct SingleBlock {
-	enum BlockType { Blank, Red, Blue, Yellow, Purple, Turkish, Green, Grey = 7, GarbageColor = 10, GarbageGray = 20 };
+	enum BlockType { Blank, Red, Blue, Yellow, Purple, Turkish, Green, Grey = 7, GarbageColor = 10, GarbageGray = 20, TempState = 100 };
 	BlockType type = BlockType::Blank; 
 	unsigned int chainId = 0;  //What chain group does we blong to?
 	unsigned int match = 0;  //tells what garbage belongs together.
