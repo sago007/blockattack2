@@ -321,6 +321,7 @@ bool BlockGame::CreateGreyGarbage()
 //Clears garbage, must take one the lower left corner!
 int BlockGame::GarbageClearer(int x, int y, int number, bool aLineToClear, int chain)
 {
+	if ((x>5)||(x<0)||(y<0)||(y>29)) return -1;
 	if ((board[x][y]).match != number) return -1;
 	if (aLineToClear) {
 		board[x][y].type = static_cast<SingleBlock::BlockType>(1 + (rand() % 6) );

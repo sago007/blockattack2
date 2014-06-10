@@ -67,7 +67,6 @@ namespace {
 		const sago::SagoSprite &background = spHolder.GetSprite("boardbackback");
 		const sago::SagoSprite &backgroundinner = spHolder.GetSprite("backboard");
 		const sago::SagoSprite &cursor = spHolder.GetSprite("cursor");
-		background.Draw(target,fTime,place.left,place.top);
 		backgroundinner.Draw(target,fTime,place.left,place.top);
 		const auto &board = g.GetBoard();
 		const auto &nextrow = g.GetNextLine();
@@ -81,7 +80,8 @@ namespace {
 		}
 		int cursorx, cursory;
 		g.GetCursor(cursorx,cursory);
-		cursor.Draw(target,fTime,place.left+50*cursorx,place.top-50+50*12-50*cursory);
+		cursor.Draw(target,fTime,place.left+50*cursorx,place.top-50+50*12-50*cursory-g.GetPixels());
+		background.Draw(target,fTime,place.left,place.top);
  	}
 }  //anonymous namespace
 
