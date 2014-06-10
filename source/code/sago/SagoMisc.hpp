@@ -33,6 +33,8 @@ namespace sago {
 	std::vector<std::string> GetFileList(const char* dir);
 	
 	std::string GetFileContent(const char* filename);
+	
+	void DrawText(sf::RenderWindow &target, sf::Text font, const std::string &text, float x, float y, unsigned int size, sf::Color color = sf::Color::White);
 		
 }  //namespace sago
 

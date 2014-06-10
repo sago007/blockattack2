@@ -64,4 +64,12 @@ namespace sago {
 		return ret;
 	}
 	
+	void DrawText(sf::RenderWindow &target, sf::Text font, const std::string &text, float x, float y, unsigned int size, sf::Color color) {
+		font.setCharacterSize(size);
+		font.setColor(color);
+		font.setPosition(x,y);
+		font.setString(text);
+		target.draw(font);
+	}
+	
 }

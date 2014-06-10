@@ -24,6 +24,7 @@ http://blockattack.sf.net
 #include "BlockClient.hpp"
 #include "BlockGame.hpp"
 #include "sago/SagoSpriteHolder.hpp"
+#include "sago/SagoMisc.hpp"
 #include <memory>
 
 namespace {
@@ -67,6 +68,9 @@ namespace {
 		const sago::SagoSprite &background = spHolder.GetSprite("boardbackback");
 		const sago::SagoSprite &backgroundinner = spHolder.GetSprite("backboard");
 		const sago::SagoSprite &cursor = spHolder.GetSprite("cursor");
+		sf::Text mytext;
+		mytext.setFont(*spHolder.GetDataHolder().getFontPtr("FreeSerif"));
+		mytext.setColor(sf::Color::White);
 		backgroundinner.Draw(target,fTime,place.left,place.top);
 		const auto &board = g.GetBoard();
 		const auto &nextrow = g.GetNextLine();
@@ -78,10 +82,20 @@ namespace {
 		for (int i=0;i < g.coloms; i++) {
 			DrawOneBlock(nextrow[i], place,i,-1,spHolder,fTime,g.GetPixels(), target);
 		}
-		int cursorx, cursory;
-		g.GetCursor(cursorx,cursory);
-		cursor.Draw(target,fTime,place.left+50*cursorx,place.top-50+50*12-50*cursory-g.GetPixels());
+		BlockGame::GameState gamestate = g.GetStatus();
+		if (gamestate == BlockGame::GameOver) {
+			sago::DrawText(target,mytext,"Game Over",place.left+50,place.top+300,52);
+		}
+		if (gamestate < BlockGame::GameOver) {
+			int cursorx, cursory;
+			g.GetCursor(cursorx,cursory);
+			cursor.Draw(target,fTime,place.left+50*cursorx,place.top-50+50*12-50*cursory-g.GetPixels());
+		}
 		background.Draw(target,fTime,place.left,place.top);
+		sago::DrawText(target,mytext,"Score",place.left+330,place.top+80,16);
+		sago::DrawText(target,mytext,"Time",place.left+330,place.top+130,16);
+		sago::DrawText(target,mytext,"Chain",place.left+330,place.top+180,16);
+		sago::DrawText(target,mytext,"Speed",place.left+330,place.top+230,16);
  	}
 }  //anonymous namespace
 
@@ -94,7 +108,7 @@ struct BlockClient::BlockClientData  {
 	float fTime = 0.0;
 	bool mousePressed = true;
 	BlockGame p1;
-	sf::Rect<int> p1palce = sf::Rect<int>(200,150,300,600);
+	sf::Rect<int> p1palce = sf::Rect<int>(150,100,300,600);
 	float p1UpdateTime = 0.0;
 };
 

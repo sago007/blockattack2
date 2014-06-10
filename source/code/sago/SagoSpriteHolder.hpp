@@ -35,6 +35,7 @@ public:
 	virtual ~SagoSpriteHolder();
 	void ReadSprites();
 	const sago::SagoSprite& GetSprite(const std::string &spritename) const;
+	const SagoDataHolder& GetDataHolder() const;
 private:
 	SagoSpriteHolder(const SagoSpriteHolder& base) = delete;
     SagoSpriteHolder& operator=(const SagoSpriteHolder& base) = delete;
