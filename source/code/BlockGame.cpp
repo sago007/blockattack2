@@ -503,9 +503,9 @@ void BlockGame::ClearBlocks() {
 	}
 	
 	for (int i=0; i<coloms; i++) {
+		SingleBlock::BlockType previus = SingleBlock::Blank;
+		int combo = 0;
 		for (int j=0; j<rows; j++) {
-			SingleBlock::BlockType previus = SingleBlock::Blank;
-			int combo = 0;
 			if (GetBoard(i,j).clearing || GetBoard(i,j).falling || GetBoard(i,j).hanging || GetBoard(i,j).type == SingleBlock::Blank || GetBoard(i,j).type > SingleBlock::Grey) {
 				previus = SingleBlock::Blank;
 				combo = 0;
@@ -528,9 +528,9 @@ void BlockGame::ClearBlocks() {
 	}
 	
 	for (int j=0; j<rows; j++) {
+		SingleBlock::BlockType previus = SingleBlock::Blank;
+		int combo = 0;
 		for (int i=0; i<coloms; i++) {
-			SingleBlock::BlockType previus = SingleBlock::Blank;
-			int combo = 0;
 			if (GetBoard(i,j).clearing || GetBoard(i,j).falling || GetBoard(i,j).hanging || GetBoard(i,j).type == SingleBlock::Blank || GetBoard(i,j).type > SingleBlock::Grey) {
 				previus = SingleBlock::Blank;
 				combo = 0;
