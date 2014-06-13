@@ -182,6 +182,16 @@ const SingleBlock &BlockGame::GetBoard(int x, int y) const {
 	return board[x][y];
 }
 
+SingleBlock &BlockGame::GetNextLine(int x) {
+	if ( x<0 || x >= coloms ) throw std::exception();
+	return nextRow[x];
+}
+
+SingleBlock &BlockGame::GetBoard(int x, int y) {
+	if (x<0 || y < 0 || x >= coloms || y>= rows) throw std::exception();
+	return board[x][y];
+}
+
 void BlockGame::GetCursor(int &x, int &y) const {
 	x = cursorx;
 	y = cursory;
@@ -217,7 +227,7 @@ void BlockGame::PushLine() {
 	}
 	SetNextLine();
 	score++;
-	if ((TowerHeight>12) && (!puzzleMode)&&(!bGameOver)&&(chain==0)) {
+	if ((TowerHeight>11) && (!puzzleMode)&&(!bGameOver)&&(chain==0)) {
 		/*if ((!vsMode)&&(theTopScoresEndless.isHighScore(score))&&(!AI_Enabled))
 		{
 			if (SoundEnabled)Mix_PlayChannel(1, applause, 0);
@@ -425,9 +435,8 @@ void BlockGame::FindTowerHeight()
 }
 
 void BlockGame::PushPixels() {
-	std::cerr << "Pushed pixel" << std::endl;
 	nrPushedPixel++;
-	if ((pixels < bsize) && TowerHeight<13) {
+	if ((pixels < bsize) && TowerHeight<12) {
 		pixels++;
 	}
 	else {
@@ -454,42 +463,57 @@ void BlockGame::ClearBlocks() {
 			garbageToBeCleared[i][j] = false;
 		}
 	}
+	//First all blocks on the first line are stable!
 	for (int i=0; i<coloms; i++) {
-		bool faaling = false;
-		for (int j=0; j<rows; j++) {
-			if ((faaling)&&(board[i][j].type>SingleBlock::Blank)&&(board[i][j].type <= SingleBlock::Grey && !board[i][j].clearing && !board[i][j].clearing && !board[i][j].hanging)) {
-				board[i][j].falling = true;
+		if (GetBoard(i,0).type != SingleBlock::Blank) {
+			GetBoard(i,0).falling = false;
+		}
+		else {
+			GetBoard(i,0).falling = true;  //Note that blank blocks are marked as falling, so the blocks above them will fall too!
+		}
+	}
+	for (int j=1; j<rows; j++) {
+		//For each of the rows above the first one.
+		for (int i=0; i<coloms; i++) {
+			if ( (GetBoard(i,j).type != SingleBlock::Blank && !GetBoard(i,j-1).falling) || GetBoard(i,j-1).hanging || GetBoard(i,j-1).clearing) {
+				GetBoard(i,j).falling = false;
 			}
-			if ((!faaling)&&(board[i][j].falling)) {
-				board[i][j].falling = false;
+			else {
+				GetBoard(i,j).falling = true;
 			}
-			if (!(board[i][j].type != SingleBlock::Blank && board[i][j].chainId > 0) ) {
-				faaling=true;
+		}
+		for (int i=1; i<coloms; i++) {
+			if (GetBoard(i,j).type == SingleBlock::GarbageColor || GetBoard(i,j).type == SingleBlock::GarbageGray) {
+				//this is a garbage block
+				if (GetBoard(i,j).match == GetBoard(i-1,j).match && !GetBoard(i-1,j).falling) {
+					//The block to the left is not falling and we are part of the same garbage block. So we are not falling either!
+					GetBoard(i,j).falling = false;
+				}
 			}
-			if (board[i][j].type == SingleBlock::GarbageColor || board[i][j].type == SingleBlock::GarbageGray || board[i][j].hanging) {
-				faaling = false;
+		}
+		for (int i=coloms-2;i>0;i--) {
+			if (GetBoard(i,j).type == SingleBlock::GarbageColor || GetBoard(i,j).type == SingleBlock::GarbageGray) {
+				//this is a garbage block
+				if (GetBoard(i,j).match == GetBoard(i+1,j).match && !GetBoard(i+1,j).falling) {
+					//The block to the right is not falling and we are part of the same garbage block. So we are not falling either!
+					GetBoard(i,j).falling = false;
+				}
 			}
 		}
 	}
+	
 	for (int i=0; i<coloms; i++) {
-		previus = SingleBlock::Blank;
-		combo=0;
 		for (int j=0; j<rows; j++) {
-			if ((board[i][j].type != SingleBlock::Blank)&&(board[i][j].type <= SingleBlock::GarbageGray && !board[i][j].clearing && !board[i][j].clearing && !board[i][j].hanging)) {
-				if (board[i][j].type == previus) {
-					combo++;
-				}
-				else {
-					if (combo>2) {
-						for (int k = j-combo; k<j; k++)
-						{
-							toBeCleared[i][k] = true;
-						}
-					}
-					combo=1;
-					previus = board[i][j].type;
-				}
-			} //if board
+			SingleBlock::BlockType previus = SingleBlock::Blank;
+			int combo = 0;
+			if (GetBoard(i,j).clearing || GetBoard(i,j).falling || GetBoard(i,j).hanging || GetBoard(i,j).type == SingleBlock::Blank || GetBoard(i,j).type > SingleBlock::Grey) {
+				previus = SingleBlock::Blank;
+				combo = 0;
+				continue;
+			}
+			if (GetBoard(i,j).type == previus) {
+				combo++;
+			}
 			else {
 				if (combo>2) {
 					for (int k = j-combo; k<j; k++)
@@ -497,12 +521,50 @@ void BlockGame::ClearBlocks() {
 						toBeCleared[i][k] = true;
 					}
 				}
-				combo = 0;
-				previus = SingleBlock::Blank;
+				combo=1;
+				previus = GetBoard(i,j).type;
 			}
-
-		} //for j
-	} //for i
+		}
+	}
+	
+	for (int j=0; j<rows; j++) {
+		for (int i=0; i<coloms; i++) {
+			SingleBlock::BlockType previus = SingleBlock::Blank;
+			int combo = 0;
+			if (GetBoard(i,j).clearing || GetBoard(i,j).falling || GetBoard(i,j).hanging || GetBoard(i,j).type == SingleBlock::Blank || GetBoard(i,j).type > SingleBlock::Grey) {
+				previus = SingleBlock::Blank;
+				combo = 0;
+				continue;
+			}
+			if (GetBoard(i,j).type == previus) {
+				combo++;
+			}
+			else {
+				if (combo>2) {
+					for (int k = i-combo; k<i; k++)
+					{
+						toBeCleared[k][j] = true;
+					}
+				}
+				combo=1;
+				previus = GetBoard(i,j).type;
+			}
+		}
+	}
+	
+	for (int i=0; i<coloms; i++) {
+		for (int j=0; j<rows; j++) {
+			if(toBeCleared[i][j]) {
+				GetBoard(i,j).clearing = true;  //Set bomb
+				GetBoard(i,j).hang = 10*fallTime;  //Set bomb timer
+			}
+			if (!GetBoard(i,j).falling && !GetBoard(i,j).clearing && !GetBoard(i,j).hanging) {
+				GetBoard(i,j).chainId = 0;  //Clear chain on stable blocks
+			}
+		}
+	}
+	
+	//TO HERE
 	
 	combo = 0;
 	chain = 0;

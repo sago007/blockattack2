@@ -45,6 +45,8 @@ public:
 private:
 	sf::Uint32 nextRandomNumber = 0;
 	sf::Uint16 rand2();
+	SingleBlock &GetNextLine(int x);
+	SingleBlock &GetBoard(int x, int y);
 	int firstUnusedChain();
 	void setGameSpeed(int globalSpeedLevel);
 	void emptyGarbageStack();
