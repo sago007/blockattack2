@@ -36,8 +36,8 @@ public:
 	BlockGame();
 	enum ActionType { AdcanceTime, Move, PlaceBlock, Switch, Push, UpdateNextRow};
 	void Action(ActionType type, int param_int1, int param_int2, int param_int3, const std::string &param_s);
-    const SingleBlock (&GetBoard() const)[coloms][rows] ;
-	const SingleBlock (&GetNextLine() const)[coloms];
+	const SingleBlock &GetNextLine(int x) const;
+	const SingleBlock &GetBoard(int x, int y) const;
 	enum GameState { NotStarted, Running, GameOver, Won, Draw };
 	GameState GetStatus() const;
 	void GetCursor(int &x, int &y) const;

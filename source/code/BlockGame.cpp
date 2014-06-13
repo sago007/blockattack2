@@ -172,12 +172,14 @@ BlockGame::GameState BlockGame::GetStatus() const {
 	return status;
 }
 
-const SingleBlock (&BlockGame::GetBoard() const)[coloms][rows] {
-	return board;
+const SingleBlock &BlockGame::GetNextLine(int x) const {
+	if ( x<0 || x >= coloms ) throw std::exception();
+	return nextRow[x];
 }
 
-const SingleBlock (&BlockGame::GetNextLine() const)[coloms] {
-	return nextRow;
+const SingleBlock &BlockGame::GetBoard(int x, int y) const {
+	if (x<0 || y < 0 || x >= coloms || y>= rows) throw std::exception();
+	return board[x][y];
 }
 
 void BlockGame::GetCursor(int &x, int &y) const {

@@ -72,15 +72,13 @@ namespace {
 		mytext.setFont(*spHolder.GetDataHolder().getFontPtr("FreeSerif"));
 		mytext.setColor(sf::Color::White);
 		backgroundinner.Draw(target,fTime,place.left,place.top);
-		const auto &board = g.GetBoard();
-		const auto &nextrow = g.GetNextLine();
 		for (int i=0; i< g.coloms; i++) {
 			for (int j=0;j< 12;j++) {
-				DrawOneBlock(board[i][j], place,i,j,spHolder,fTime,g.GetPixels(), target);
+				DrawOneBlock(g.GetBoard(i,j), place,i,j,spHolder,fTime,g.GetPixels(), target);
 			}
 		}
 		for (int i=0;i < g.coloms; i++) {
-			DrawOneBlock(nextrow[i], place,i,-1,spHolder,fTime,g.GetPixels(), target);
+			DrawOneBlock(g.GetNextLine(i), place,i,-1,spHolder,fTime,g.GetPixels(), target);
 		}
 		BlockGame::GameState gamestate = g.GetStatus();
 		if (gamestate == BlockGame::GameOver) {
