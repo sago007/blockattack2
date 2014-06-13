@@ -30,37 +30,47 @@ http://blockattack.sf.net
 namespace {
 	void DrawOneBlock(const SingleBlock &b, const sf::Rect<int> &place, int i, int j, 
 		const sago::SagoSpriteHolder &spHolder, float fTime, int pixels, sf::RenderWindow &target) {
+		sf::IntRect part;
+		part.left = 0;
+		part.top = 0;
+		part.width = 50;
+		if (j == -1) {
+			part.height = pixels;
+		}
+		else {
+			part.height = 50;
+		}
 		if (b.type == b.Blue) {
 			 const sago::SagoSprite &mySprite = spHolder.GetSprite("block_blue");
-			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j-pixels);
+			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j-pixels,part);
 		}
 		if (b.type == b.Green) {
 			 const sago::SagoSprite &mySprite = spHolder.GetSprite("block_green");
-			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j-pixels);
+			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j-pixels,part);
 		}
 		if (b.type == b.Grey) {
 			 const sago::SagoSprite &mySprite = spHolder.GetSprite("block_grey");
-			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j-pixels);
+			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j-pixels,part);
 		}
 		if (b.type == b.Purple) {
 			 const sago::SagoSprite &mySprite = spHolder.GetSprite("block_purple");
-			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j-pixels);
+			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j-pixels,part);
 		}
 		if (b.type == b.Red) {
 			 const sago::SagoSprite &mySprite = spHolder.GetSprite("block_red");
-			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j-pixels);
+			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j-pixels,part);
 		}
 		if (b.type == b.Turkish) {
 			 const sago::SagoSprite &mySprite = spHolder.GetSprite("block_turkish");
-			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j-pixels);
+			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j-pixels,part);
 		}
 		if (b.type == b.Yellow) {
-			 const sago::SagoSprite &mySprite = spHolder.GetSprite("block_yellow");
-			 mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j-pixels);
+			const sago::SagoSprite &mySprite = spHolder.GetSprite("block_yellow");
+			mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j-pixels,part);
 		}
-		if (j == -1) {
+		if (j == -1 && pixels > 0) {
 			const sago::SagoSprite &mySprite = spHolder.GetSprite("block_trans");
-			mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j-pixels);
+			mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j-pixels,part);
 		}
 	}
 	

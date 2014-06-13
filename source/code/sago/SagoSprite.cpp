@@ -57,6 +57,18 @@ void SagoSprite::Draw(sf::RenderWindow &target, sf::Int32 frameTime, float x, fl
 	target.draw(data->sprite);
 }
 
+void SagoSprite::Draw(sf::RenderWindow &target, sf::Int32 frameTime, float x, float y, const sf::IntRect &part) const {
+	sf::IntRect rect = data->imgCord;
+	rect.left+=rect.width*((frameTime/data->aniFrameTime)%data->aniFrames);
+	rect.left += part.left;
+	rect.top += part.top;
+	rect.width = part.width;
+	rect.height = part.height;
+	data->sprite.setTextureRect(rect);
+	data->sprite.setPosition(x-data->origin.x,y-data->origin.y);
+	target.draw(data->sprite);
+}
+
 void SagoSprite::SetOrigin(const sf::Vector2i &newOrigin) {
 	data->origin = newOrigin;
 }
