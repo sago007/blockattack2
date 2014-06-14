@@ -8,6 +8,17 @@
 #include "BlockGame.hpp"
 #include <iostream>
 
+namespace {
+	void ReduceTime(SingleBlock &block, unsigned int amount) {
+		if (block.hang > amount) {
+			block.hang-=amount;
+		}
+		else {
+			block.hang = 0;
+		}
+	}
+}
+
 BlockGame::BlockGame() {
 }
 
@@ -245,27 +256,7 @@ void BlockGame::ReduceStuff() {
 	{
 		for (int i=0; i<coloms; i++) {
 			for (int j=0; j<rows; j++) {
-				if (board[i][j].hanging) {
-					int hangNumber = board[i][j].hang;
-					if (hangNumber<=howMuchHang) {
-						board[i][j].hanging = false;
-						board[i][j].hang = 0;
-					}
-					else {
-						board[i][j].hang-=howMuchHang;
-					}
-				}
-				if (board[i][j].clearing) {
-					int hangNumber = board[i][j].hang;
-					if (hangNumber<=howMuchHang) {
-						//The blocks must be cleared
-						board[i][j].hang = 0;
-					}
-					else
-					{
-						board[i][j].hang-=howMuchHang;
-					}
-				}
+				ReduceTime(GetBoard(i,j),howMuchHang);
 			}
 		}
 	}
@@ -561,11 +552,17 @@ void BlockGame::ClearBlocks() {
 			if (!GetBoard(i,j).falling && !GetBoard(i,j).clearing && !GetBoard(i,j).hanging) {
 				GetBoard(i,j).chainId = 0;  //Clear chain on stable blocks
 			}
+			if (GetBoard(i,j).clearing && GetBoard(i,j).hang == 0) {
+				//Remove blocks
+				GetBoard(i,j).type = SingleBlock::Blank;
+			}
 		}
 	}
 	
-	//TO HERE
 	
+
+	//TO HERE
+#if 0	
 	combo = 0;
 	chain = 0;
 	for (int i=0; i<coloms; i++) {
@@ -749,6 +746,7 @@ void BlockGame::ClearBlocks() {
 			}
 		}
 	}
+#endif
 }
 
 void BlockGame::AdvanceTo(const int time2advance) {
@@ -795,6 +793,7 @@ void BlockGame::AdvanceTo(const int time2advance) {
 		}
 	}
 	if (status == Running) {
+		ReduceStuff();
 		ClearBlocks();
 	}
 }

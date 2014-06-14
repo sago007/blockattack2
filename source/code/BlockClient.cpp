@@ -81,6 +81,11 @@ namespace {
 		sf::Text mytext;
 		mytext.setFont(*spHolder.GetDataHolder().getFontPtr("FreeSerif"));
 		mytext.setColor(sf::Color::White);
+		background.Draw(target,fTime,place.left,place.top);
+		sago::DrawText(target,mytext,"Score",place.left+330,place.top+80,16);
+		sago::DrawText(target,mytext,"Time",place.left+330,place.top+130,16);
+		sago::DrawText(target,mytext,"Chain",place.left+330,place.top+180,16);
+		sago::DrawText(target,mytext,"Speed",place.left+330,place.top+230,16);
 		backgroundinner.Draw(target,fTime,place.left,place.top);
 		for (int i=0; i< g.coloms; i++) {
 			for (int j=0;j< 12;j++) {
@@ -99,11 +104,6 @@ namespace {
 			g.GetCursor(cursorx,cursory);
 			cursor.Draw(target,fTime,place.left+50*cursorx,place.top-50+50*12-50*cursory-g.GetPixels());
 		}
-		background.Draw(target,fTime,place.left,place.top);
-		sago::DrawText(target,mytext,"Score",place.left+330,place.top+80,16);
-		sago::DrawText(target,mytext,"Time",place.left+330,place.top+130,16);
-		sago::DrawText(target,mytext,"Chain",place.left+330,place.top+180,16);
-		sago::DrawText(target,mytext,"Speed",place.left+330,place.top+230,16);
  	}
 }  //anonymous namespace
 
