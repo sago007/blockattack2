@@ -212,18 +212,35 @@ int BlockGame::GetPixels() const {
 	return pixels;
 }
 
+int BlockGame::GetTime() const {
+	return static_cast<int>(ticks)-static_cast<int>(gameStatedAt);
+	
+}
+
+unsigned int BlockGame::GetScore() const {
+	return score;
+}
+
+int BlockGame::GetChain() const {
+	return chain;
+}
+
+int BlockGame::GetSpeedLevel() const {
+	return speedLevel;
+}
+
 
 void BlockGame::SwitchAtCursor() {
 	if (status != BlockGame::Running) {
 		return;
 	}
-	SingleBlock leftBlock = board[cursorx][cursory];
-	SingleBlock rightBlock = board[cursorx+1][cursory];
+	SingleBlock leftBlock = GetBoard(cursorx,cursory);
+	SingleBlock rightBlock = GetBoard(cursorx+1,cursory);
 	if (leftBlock.type > SingleBlock::Grey || rightBlock.type > SingleBlock::Grey ) return;
-	if (leftBlock.falling || rightBlock.falling) return;
+	if ( (leftBlock.falling && leftBlock.type != SingleBlock::Blank)  || (rightBlock.falling  && rightBlock.type != SingleBlock::Blank) ) return;
 	if (leftBlock.clearing || rightBlock.clearing) return;
-	board[cursorx][cursory] = rightBlock;
-	board[cursorx+1][cursory] = leftBlock;
+	GetBoard(cursorx,cursory) = rightBlock;
+	GetBoard(cursorx+1,cursory) = leftBlock;
 }
 
 void BlockGame::PushLine() {
@@ -232,13 +249,13 @@ void BlockGame::PushLine() {
 	}
 	for (int i = 0; i < coloms; i++) {
 		for (int j = rows-1; j > 0; j--) {
-			board[i][j] = board[i][j-1];
+			GetBoard(i,j) = GetBoard(i,j-1);
 		}
-		board[i][0] = nextRow[i];
+		GetBoard(i,0) = GetNextLine(i);
 	}
 	SetNextLine();
 	score++;
-	if ((TowerHeight>11) && (!puzzleMode)&&(!bGameOver)&&(chain==0)) {
+	if ((TowerHeight>10) && (!puzzleMode)&&(!bGameOver)&&(chain==0)) {
 		/*if ((!vsMode)&&(theTopScoresEndless.isHighScore(score))&&(!AI_Enabled))
 		{
 			if (SoundEnabled)Mix_PlayChannel(1, applause, 0);
@@ -382,9 +399,9 @@ void BlockGame::SetNextLine() {
 void BlockGame::FallDown() {
 	for (int i = 0; i < coloms; i++) {
 		for (int j=0; j< rows-1; j++) {
-			if (board[i][j].type == SingleBlock::Blank && board[i][j+1].falling) {
-				board[i][j] = board[i][j+1];
-				board[i][j].type = SingleBlock::Blank;
+			if (GetBoard(i,j).type == SingleBlock::Blank && GetBoard(i,j+1).falling) {
+				GetBoard(i,j) = GetBoard(i,j+1);
+				GetBoard(i,j+1).type = SingleBlock::Blank;
 			}
 		}
 	}
@@ -445,9 +462,7 @@ void BlockGame::SetGameOver() {
 
 void BlockGame::ClearBlocks() {
 	bool toBeCleared[coloms][rows];
-	
 	SingleBlock::BlockType previus=SingleBlock::Blank; //the last block checked
-	int combo=0;
 	for (int i=0; i<coloms; i++) {
 		for (int j=0; j<rows; j++){
 			toBeCleared[i][j] = false;
@@ -559,8 +574,6 @@ void BlockGame::ClearBlocks() {
 			}
 		}
 	}
-	
-	
 
 	//TO HERE
 #if 0	
@@ -796,5 +809,8 @@ void BlockGame::AdvanceTo(const int time2advance) {
 	if (status == Running) {
 		ReduceStuff();
 		ClearBlocks();
+		while (ticks > nrFellDown*100) {
+			FallDown();
+		}
 	}
 }

@@ -72,6 +72,11 @@ namespace {
 			const sago::SagoSprite &mySprite = spHolder.GetSprite("block_bomb");
 			mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j-pixels,part);
 		}
+		if (b.falling) { 
+			//Should be "b.hanging" but I need to debug the falling option 
+			const sago::SagoSprite &mySprite = spHolder.GetSprite("block_ready");
+			mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j-pixels,part);
+		}
 		if (j == -1 && pixels > 0) {
 			const sago::SagoSprite &mySprite = spHolder.GetSprite("block_trans");
 			mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j-pixels,part);
@@ -87,9 +92,13 @@ namespace {
 		mytext.setColor(sf::Color::White);
 		background.Draw(target,fTime,place.left,place.top);
 		sago::DrawText(target,mytext,"Score",place.left+330,place.top+80,16);
+		sago::DrawText(target,mytext,std::to_string(g.GetScore()),place.left+330,place.top+100,16);
 		sago::DrawText(target,mytext,"Time",place.left+330,place.top+130,16);
+		sago::DrawText(target,mytext,std::to_string(g.GetTime()),place.left+330,place.top+150,16);
 		sago::DrawText(target,mytext,"Chain",place.left+330,place.top+180,16);
+		sago::DrawText(target,mytext,std::to_string(g.GetChain()),place.left+330,place.top+200,16);
 		sago::DrawText(target,mytext,"Speed",place.left+330,place.top+230,16);
+		sago::DrawText(target,mytext,std::to_string(g.GetSpeedLevel()),place.left+330,place.top+260,16);
 		backgroundinner.Draw(target,fTime,place.left,place.top);
 		for (int i=0; i< g.coloms; i++) {
 			for (int j=0;j< 12;j++) {

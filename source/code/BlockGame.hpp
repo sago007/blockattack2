@@ -42,6 +42,10 @@ public:
 	GameState GetStatus() const;
 	void GetCursor(int &x, int &y) const;
     int GetPixels() const;
+	int GetTime() const;
+	unsigned int GetScore() const;
+	int GetChain() const;
+	int GetSpeedLevel() const;
 private:
 	sf::Uint32 nextRandomNumber = 0;
 	sf::Uint16 rand2();
