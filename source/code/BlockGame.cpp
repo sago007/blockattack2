@@ -555,6 +555,7 @@ void BlockGame::ClearBlocks() {
 			if (GetBoard(i,j).clearing && GetBoard(i,j).hang == 0) {
 				//Remove blocks
 				GetBoard(i,j).type = SingleBlock::Blank;
+				GetBoard(i,j).clearing = false;
 			}
 		}
 	}

@@ -68,6 +68,10 @@ namespace {
 			const sago::SagoSprite &mySprite = spHolder.GetSprite("block_yellow");
 			mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j-pixels,part);
 		}
+		if (b.clearing) {
+			const sago::SagoSprite &mySprite = spHolder.GetSprite("block_bomb");
+			mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j-pixels,part);
+		}
 		if (j == -1 && pixels > 0) {
 			const sago::SagoSprite &mySprite = spHolder.GetSprite("block_trans");
 			mySprite.Draw(target,fTime,place.left+50*i,place.top+place.height-50-50*j-pixels,part);
