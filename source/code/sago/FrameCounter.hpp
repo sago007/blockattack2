@@ -30,8 +30,18 @@ namespace sago {
 
 class FrameCounter {
 public:
+	/**
+	 * Creates a framerate counter.
+	 * The font "FreeSerif" will be taken from dataHolder
+     * @param dataHolder The programs dataholder used the font. Must have a lifetime at least as long as the FrameCounter object
+     */
 	FrameCounter(const SagoDataHolder &dataHolder);
 	virtual ~FrameCounter();
+	/**
+	 * Draws the framerate to the target
+     * @param target The render window to draw on
+     * @param frameTime time the draw was called in milliseconds since program start
+     */
 	void Draw(sf::RenderWindow &target, sf::Int32 frameTime);
 private:
 	FrameCounter(const FrameCounter& base) = delete;

@@ -31,8 +31,27 @@ namespace sago {
 class SagoSprite {
 public:
 	SagoSprite(const SagoDataHolder &texHolder, const std::string &texture,const sf::IntRect &initImage,const int animationFrames, const int animationFrameLength);
+	/**
+	 * Draws the sprite to a given render window
+     * @param target The render window to draw on
+     * @param frameTime The time in milliseonds since gamestart. Used to determen the place in the animation
+     * @param x Place to draw the sprite
+     * @param y Place to draw the sprite
+     */
 	void Draw(sf::RenderWindow &target, sf::Int32 frameTime, float x, float y) const;
+	/**
+	 * Draws part of the sprite to a given render window
+     * @param target The render window to draw on
+     * @param frameTime The time in milliseonds since gamestart. Used to determen the place in the animation
+     * @param x Place to draw the sprite
+     * @param y Place to draw the sprite
+     * @param part the part of the sprite that should be drawn. 
+     */
 	void Draw(sf::RenderWindow &target, sf::Int32 frameTime, float x, float y,const sf::IntRect &part) const;
+	/**
+	 * Set a different origin. Normally it is the top left cornor. But in some cases you might want to center the origin or tranform it for other reasons
+     * @param newOrigin the coordinates that should be the new origin. Call with {0,0} to reset to default 
+     */
 	void SetOrigin(const sf::Vector2i &newOrigin);
 	virtual ~SagoSprite();
 private:

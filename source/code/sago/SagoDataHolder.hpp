@@ -32,6 +32,11 @@ namespace sago {
 class SagoDataHolder {
 public:
 	SagoDataHolder();
+	/**
+	 * Return a pointer to the given texture. The pointer is valid for the lifetime of SagoDataHolder object it was taken from.
+     * @param textureName Name of the texture
+     * @return  Pointer to the loaded texture
+     */
 	const sf::Texture* getTexturePtr(const std::string &textureName) const;
 	const sf::Font* getFontPtr(const std::string &fontName) const;
 	sf::Music* getMusicPtr(const std::string &musicName) const;

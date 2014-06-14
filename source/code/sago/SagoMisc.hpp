@@ -30,8 +30,20 @@ http://blockattack.sf.net
 
 namespace sago {
 	
+	/**
+	 * Returns a vector with all filenames in a given directory.
+	 * PHYSFS must be setup before hand. The directory is relative to the PHYSFS base
+     * @param dir The directory to list
+     * @return A vector with the filenames in the given directory. If empty the directory was empty or did not exist
+     */
 	std::vector<std::string> GetFileList(const char* dir);
 	
+	/**
+	 * Reads an entire file into memory.
+	 * PHYSFS must be setup before hand
+     * @param filename The file to read
+     * @return The content of the file. If empty either the file was empty, did not exist or could not be opened
+     */
 	std::string GetFileContent(const char* filename);
 	
 	void DrawText(sf::RenderWindow &target, sf::Text font, const std::string &text, float x, float y, unsigned int size, sf::Color color = sf::Color::White);

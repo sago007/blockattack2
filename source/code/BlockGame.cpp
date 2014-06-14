@@ -433,7 +433,7 @@ void BlockGame::FindTowerHeight()
 	{
 		found = true;
 		for (int j=0; j<coloms; j++) {
-			if (board[j][TowerHeight].type != SingleBlock::Blank) {
+			if (GetBoard(j,TowerHeight).type != SingleBlock::Blank) {
 				found = false;
 			}
 		}
@@ -512,12 +512,9 @@ void BlockGame::ClearBlocks() {
 		SingleBlock::BlockType previus = SingleBlock::Blank;
 		int combo = 0;
 		for (int j=0; j<rows; j++) {
-			if (GetBoard(i,j).clearing || GetBoard(i,j).falling || GetBoard(i,j).hanging || GetBoard(i,j).type == SingleBlock::Blank || GetBoard(i,j).type > SingleBlock::Grey) {
-				previus = SingleBlock::Blank;
-				combo = 0;
-				continue;
-			}
-			if (GetBoard(i,j).type == previus) {
+			if (GetBoard(i,j).type == previus && 
+					!(GetBoard(i,j).clearing || GetBoard(i,j).falling || GetBoard(i,j).hanging 
+					|| GetBoard(i,j).type == SingleBlock::Blank || GetBoard(i,j).type > SingleBlock::Grey)) {
 				combo++;
 			}
 			else {
@@ -537,12 +534,9 @@ void BlockGame::ClearBlocks() {
 		SingleBlock::BlockType previus = SingleBlock::Blank;
 		int combo = 0;
 		for (int i=0; i<coloms; i++) {
-			if (GetBoard(i,j).clearing || GetBoard(i,j).falling || GetBoard(i,j).hanging || GetBoard(i,j).type == SingleBlock::Blank || GetBoard(i,j).type > SingleBlock::Grey) {
-				previus = SingleBlock::Blank;
-				combo = 0;
-				continue;
-			}
-			if (GetBoard(i,j).type == previus) {
+			if (GetBoard(i,j).type == previus && 
+					!(GetBoard(i,j).clearing || GetBoard(i,j).falling || GetBoard(i,j).hanging 
+					|| GetBoard(i,j).type == SingleBlock::Blank || GetBoard(i,j).type > SingleBlock::Grey)) {
 				combo++;
 			}
 			else {
@@ -556,13 +550,19 @@ void BlockGame::ClearBlocks() {
 				previus = GetBoard(i,j).type;
 			}
 		}
+		if (combo>2) {
+			for (int k = coloms-combo; k<coloms; k++)
+			{
+				toBeCleared[k][j] = true;
+			}
+		}
 	}
 	
 	for (int i=0; i<coloms; i++) {
 		for (int j=0; j<rows; j++) {
 			if(toBeCleared[i][j]) {
 				GetBoard(i,j).clearing = true;  //Set bomb
-				GetBoard(i,j).hang = 10*fallTime;  //Set bomb timer
+				GetBoard(i,j).hang = fallTime;  //Set bomb timer
 			}
 			if (!GetBoard(i,j).falling && !GetBoard(i,j).clearing && !GetBoard(i,j).hanging) {
 				GetBoard(i,j).chainId = 0;  //Clear chain on stable blocks
