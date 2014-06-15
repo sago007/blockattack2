@@ -49,7 +49,7 @@ void BlockGame::Action(ActionType type, int param_int1, int param_int2, int para
 			if (param_int1 < 0 || param_int1 > coloms) break;
 			if (param_int2 < 0 || param_int2 > rows) break;
 			if (param_int3 < 1 || param_int3 > SingleBlock::Grey) break;
-			board[param_int1][param_int2].type = static_cast<SingleBlock::BlockType>(param_int3);
+			GetBoard(param_int1,param_int2).type = static_cast<SingleBlock::BlockType>(param_int3);
 			break;
 		case ActionType::UpdateNextRow:
 			SetNextLine();
@@ -213,7 +213,7 @@ int BlockGame::GetPixels() const {
 }
 
 int BlockGame::GetTime() const {
-	return static_cast<int>(ticks)-static_cast<int>(gameStatedAt);
+	return static_cast<int>(ticks);
 	
 }
 
@@ -254,6 +254,7 @@ void BlockGame::PushLine() {
 		GetBoard(i,0) = GetNextLine(i);
 	}
 	SetNextLine();
+	cursory++;
 	score++;
 	if ((TowerHeight>10) && (!puzzleMode)&&(!bGameOver)&&(chain==0)) {
 		/*if ((!vsMode)&&(theTopScoresEndless.isHighScore(score))&&(!AI_Enabled))
@@ -265,6 +266,7 @@ void BlockGame::PushLine() {
 		}*/
 		SetGameOver();
 	}
+	pixels = 0;
 }
 
 void BlockGame::ReduceStuff() {
@@ -342,7 +344,7 @@ bool BlockGame::CreateGreyGarbage()
 int BlockGame::GarbageClearer(int x, int y, int number, bool aLineToClear, int chain)
 {
 	if ((x>5)||(x<0)||(y<0)||(y>29)) return -1;
-	if ((board[x][y]).match != number) return -1;
+	if (GetBoard(x,y).match != number) return -1;
 	if (aLineToClear) {
 		board[x][y].type = static_cast<SingleBlock::BlockType>(1 + (rand() % 6) );
 		board[x][y].hanging = true;
@@ -399,7 +401,7 @@ void BlockGame::SetNextLine() {
 void BlockGame::FallDown() {
 	for (int i = 0; i < coloms; i++) {
 		for (int j=0; j< rows-1; j++) {
-			if (GetBoard(i,j).type == SingleBlock::Blank && GetBoard(i,j+1).falling) {
+			if (GetBoard(i,j).type == SingleBlock::Blank && GetBoard(i,j+1).falling && GetBoard(i,j+1).type != SingleBlock::Blank) {
 				GetBoard(i,j) = GetBoard(i,j+1);
 				GetBoard(i,j+1).type = SingleBlock::Blank;
 			}
@@ -443,15 +445,11 @@ void BlockGame::FindTowerHeight()
 }
 
 void BlockGame::PushPixels() {
-	nrPushedPixel++;
 	if ((pixels < bsize) && TowerHeight<12) {
 		pixels++;
 	}
 	else {
 		PushLine();
-	}
-	if (pixels>bsize) {
-		pixels=0;
 	}
 }
 
@@ -462,7 +460,6 @@ void BlockGame::SetGameOver() {
 
 void BlockGame::ClearBlocks() {
 	bool toBeCleared[coloms][rows];
-	SingleBlock::BlockType previus=SingleBlock::Blank; //the last block checked
 	for (int i=0; i<coloms; i++) {
 		for (int j=0; j<rows; j++){
 			toBeCleared[i][j] = false;
@@ -526,6 +523,9 @@ void BlockGame::ClearBlocks() {
 				}
 				combo=1;
 				previus = GetBoard(i,j).type;
+				if (GetBoard(i,j).clearing || GetBoard(i,j).falling || GetBoard(i,j).hanging) {
+					combo = 0;
+				}
 			}
 		}
 	}
@@ -548,6 +548,9 @@ void BlockGame::ClearBlocks() {
 				}
 				combo=1;
 				previus = GetBoard(i,j).type;
+				if (GetBoard(i,j).clearing || GetBoard(i,j).falling || GetBoard(i,j).hanging) {
+					combo = 0;
+				}
 			}
 		}
 		if (combo>2) {
@@ -796,14 +799,21 @@ void BlockGame::AdvanceTo(const int time2advance) {
 		nrStops++;
 	}
 	
+	bool increasedSpeedLevel = false;
 	if ((ticks>20000*speedLevel)&&(speedLevel <99) && (status == Running)){
 		speed = (baseSpeed*0.9)/((double)speedLevel*0.5);
 		speedLevel++;
-		nrPushedPixel=(int)((double)(ticks)/(1000.0*speed));
+		increasedSpeedLevel = true;
 	}
 	if ((ticks>nrPushedPixel*1000*speed) && (status == BlockGame::Running) && (!stop)) {
 		while ( (ticks>nrPushedPixel*1000*speed) && (!(puzzleMode))) {
-			PushPixels();
+			if (increasedSpeedLevel) {
+				nrPushedPixel++;
+			}
+			else {
+				nrPushedPixel++;
+				PushPixels();
+			}
 		}
 	}
 	if (status == Running) {

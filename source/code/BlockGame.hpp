@@ -101,8 +101,8 @@ private:
 	unsigned int hangTicks = 0;
 	int nrPushedPixel = 0;
 	int nextGarbageNumber = 1;
-	double speed = 1.0;
-	double baseSpeed = 1.0;
+	double speed = 0.5;
+	double baseSpeed = 0.5;
 	int chain = 0; 
 	int chainSize[maxNumberOfChains]{}; //Contains the chains
 	bool chainUsed[maxNumberOfChains]{};   //True if the chain is used
