@@ -247,6 +247,9 @@ void BlockGame::PushLine() {
 	if (status != BlockGame::Running) {
 		return;
 	}
+	if (chain > 0) {
+		return;
+	}
 	for (int i = 0; i < coloms; i++) {
 		for (int j = rows-1; j > 0; j--) {
 			GetBoard(i,j) = GetBoard(i,j-1);
@@ -445,6 +448,9 @@ void BlockGame::FindTowerHeight()
 }
 
 void BlockGame::PushPixels() {
+	if (chain > 0) {
+		return;
+	}
 	if ((pixels < bsize) && TowerHeight<12) {
 		pixels++;
 	}
@@ -574,6 +580,16 @@ void BlockGame::ClearBlocks() {
 				//Remove blocks
 				GetBoard(i,j).type = SingleBlock::Blank;
 				GetBoard(i,j).clearing = false;
+			}
+		}
+	}
+	chain = 0;
+	for (int i=0; i<coloms; i++) {
+		for (int j=0; j<rows; j++) {
+			SingleBlock &temp = GetBoard(i,j);
+			if (temp.clearing) {
+				// Must be set to the highest chain
+				chain = 1;  
 			}
 		}
 	}
