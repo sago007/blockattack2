@@ -484,11 +484,11 @@ void BlockGame::ClearBlocks() {
 	for (int j=1; j<rows; j++) {
 		//For each of the rows above the first one.
 		for (int i=0; i<coloms; i++) {
-			if ( (GetBoard(i,j).type != SingleBlock::Blank && !GetBoard(i,j-1).falling) || GetBoard(i,j-1).hanging || GetBoard(i,j-1).clearing) {
-				GetBoard(i,j).falling = false;
+			if ( GetBoard(i,j).type == SingleBlock::Blank || ( GetBoard(i,j-1).falling && !GetBoard(i,j).hanging && !GetBoard(i,j).clearing ) ) {
+				GetBoard(i,j).falling = true;
 			}
 			else {
-				GetBoard(i,j).falling = true;
+				GetBoard(i,j).falling = false;
 			}
 		}
 		for (int i=1; i<coloms; i++) {
