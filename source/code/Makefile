@@ -6,7 +6,7 @@ PROGRAMNAME_OUT=../../game/blockattack
 
 O_FILES=${PROGRAMNAME}.o
 
-BASE_LIBS+=-lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio  -lphysfs -ljson-c
+BASE_LIBS+=-lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio  -lphysfs -ljsoncpp
 O_FILES+= BlockMenu.o sago/FrameCounter.o sago/SagoCommandQueue.o sago/SagoDataHolder.o sago/SagoMenu.o sago/SagoMisc.o sago/SagoSprite.o sago/SagoSpriteHolder.o
 O_FILES+= sago/SagoMusicBackground.o sago/GameStateManager.o CommandProcessor.o BlockClient.o BlockGame.o
 

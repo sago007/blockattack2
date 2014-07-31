@@ -60,84 +60,53 @@
         </makeTool>
       </makefileType>
       <item path="BlockClient.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
       </item>
       <item path="BlockGame.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
       </item>
       <item path="BlockMenu.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
       </item>
       <item path="CommandProcessor.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
       </item>
       <item path="GameStateManager.cpp" ex="false" tool="1" flavor2="8">
       </item>
       <item path="blockattack.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
       </item>
-      <item path="sago/FrameCounter.cpp" ex="false" tool="1" flavor2="8">
+      <folder path="0/sago">
         <ccTool>
           <incDir>
-            <pElem>/usr/include/SFML/Graphics</pElem>
-            <pElem>sago</pElem>
-            <pElem>/usr/include/SFML</pElem>
-            <pElem>/usr/include/SFML/System</pElem>
-            <pElem>/usr/include/SFML/Window</pElem>
             <pElem>.</pElem>
           </incDir>
+        </ccTool>
+      </folder>
+      <item path="sago/FrameCounter.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
         </ccTool>
       </item>
       <item path="sago/GameStateManager.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
-          <incDir>
-            <pElem>.</pElem>
-          </incDir>
-        </ccTool>
       </item>
       <item path="sago/SagoCommandQueue.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
-          <incDir>
-            <pElem>.</pElem>
-          </incDir>
-        </ccTool>
       </item>
       <item path="sago/SagoDataHolder.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
-          <incDir>
-            <pElem>.</pElem>
-          </incDir>
-        </ccTool>
       </item>
       <item path="sago/SagoMenu.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
-          <incDir>
-            <pElem>.</pElem>
-          </incDir>
-        </ccTool>
       </item>
       <item path="sago/SagoMisc.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
-          <incDir>
-            <pElem>.</pElem>
-          </incDir>
-        </ccTool>
       </item>
       <item path="sago/SagoMusicBackground.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
-          <incDir>
-            <pElem>.</pElem>
-          </incDir>
-        </ccTool>
       </item>
       <item path="sago/SagoSprite.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
-          <incDir>
-            <pElem>.</pElem>
-          </incDir>
-        </ccTool>
       </item>
       <item path="sago/SagoSpriteHolder.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
-          <incDir>
-            <pElem>.</pElem>
-          </incDir>
-        </ccTool>
       </item>
     </conf>
   </confs>

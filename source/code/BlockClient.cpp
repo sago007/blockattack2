@@ -94,7 +94,8 @@ namespace {
 		sago::DrawText(target,mytext,"Score",place.left+330,place.top+80,16);
 		sago::DrawText(target,mytext,std::to_string(g.GetScore()),place.left+330,place.top+100,16);
 		sago::DrawText(target,mytext,"Time",place.left+330,place.top+130,16);
-		sago::DrawText(target,mytext,std::to_string(g.GetTime()),place.left+330,place.top+150,16);
+		std::string formattedTime = std::to_string(g.GetTime());
+		sago::DrawText(target,mytext,formattedTime,place.left+330,place.top+150,16);
 		sago::DrawText(target,mytext,"Chain",place.left+330,place.top+180,16);
 		sago::DrawText(target,mytext,std::to_string(g.GetChain()),place.left+330,place.top+200,16);
 		sago::DrawText(target,mytext,"Speed",place.left+330,place.top+230,16);

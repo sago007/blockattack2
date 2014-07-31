@@ -25,7 +25,7 @@ http://blockattack.sf.net
 #include "SagoMisc.hpp"
 #include <memory>
 #include <unordered_map>
-#include <json-c/json.h>
+#include <jsoncpp/json/json.h>
 #include <iostream>
 #include <string.h>
 #include <boost/algorithm/string/predicate.hpp>
@@ -62,119 +62,36 @@ SagoSpriteHolder::~SagoSpriteHolder() {
 void SagoSpriteHolder::ReadSpriteFile(const std::string &filename) {
 	string fullfile = "sprites/"+filename;
 	string content = sago::GetFileContent(fullfile.c_str());
-	json_object * jobj = json_tokener_parse(content.c_str());
-	json_object_object_foreach(jobj, key, val) {
-		string spriteName = key;
-		string textureName;
-		int topx = 0;
-		int topy = 0;
-		int height = 0;
-		int width = 0;
-		int number_of_frames = 1;
-		int frame_time = 1;
-		int originx = 0;
-		int originy = 0;
-		enum json_type type = json_object_get_type(val);
-		if (type == json_type_object) {
-			json_object *innerobject = json_object_object_get(jobj, key);
-			json_object_object_foreach(innerobject, key2, val2) {
-				if (strequal(key2,"texture")) {
-					type = json_object_get_type(val2);
-					if (type == json_type_string) {
-						textureName = json_object_get_string(val2);
-					}
-					else {
-						cerr << "Error passing sprite! File: " << filename << ", sprite: " << spriteName << ", key: " << key2 << ". Value was expected to be a string!" << endl; 
-					}
-				}
-				if (strequal(key2,"topx")) {
-					type = json_object_get_type(val2);
-					if (type == json_type_int) {
-						topx = json_object_get_int(val2);
-					}
-					else {
-						cerr << "Error passing sprite! File: " << filename << ", sprite: " << spriteName << ", key: " << key2 << ". Value was expected to be an integer!" << endl; 
-					}
-				}
-				if (strequal(key2,"topy")) {
-					type = json_object_get_type(val2);
-					if (type == json_type_int) {
-						topy = json_object_get_int(val2);
-					}
-					else {
-						cerr << "Error passing sprite! File: " << filename << ", sprite: " << spriteName << ", key: " << key2 << ". Value was expected to be an integer!" << endl; 
-					}
-				}
-				if (strequal(key2,"height")) {
-					type = json_object_get_type(val2);
-					if (type == json_type_int) {
-						height = json_object_get_int(val2);
-					}
-					else {
-						cerr << "Error passing sprite! File: " << filename << ", sprite: " << spriteName << ", key: " << key2 << ". Value was expected to be an integer!" << endl; 
-					}
-				}
-				if (strequal(key2,"width")) {
-					type = json_object_get_type(val2);
-					if (type == json_type_int) {
-						width = json_object_get_int(val2);
-					}
-					else {
-						cerr << "Error passing sprite! File: " << filename << ", sprite: " << spriteName << ", key: " << key2 << ". Value was expected to be an integer!" << endl; 
-					}
-				}
-				if (strequal(key2,"number_of_frames")) {
-					type = json_object_get_type(val2);
-					if (type == json_type_int) {
-						number_of_frames = json_object_get_int(val2);
-					}
-					else {
-						cerr << "Error passing sprite! File: " << filename << ", sprite: " << spriteName << ", key: " << key2 << ". Value was expected to be an integer!" << endl; 
-					}
-				}
-				if (strequal(key2,"frame_time")) {
-					type = json_object_get_type(val2);
-					if (type == json_type_int) {
-						frame_time = json_object_get_int(val2);
-					}
-					else {
-						cerr << "Error passing sprite! File: " << filename << ", sprite: " << spriteName << ", key: " << key2 << ". Value was expected to be an integer!" << endl; 
-					}
-				}
-				if (strequal(key2,"originx")) {
-					type = json_object_get_type(val2);
-					if (type == json_type_int) {
-						originx = json_object_get_int(val2);
-					}
-					else {
-						cerr << "Error passing sprite! File: " << filename << ", sprite: " << spriteName << ", key: " << key2 << ". Value was expected to be an integer!" << endl; 
-					}
-				}
-				if (strequal(key2,"originy")) {
-					type = json_object_get_type(val2);
-					if (type == json_type_int) {
-						originy = json_object_get_int(val2);
-					}
-					else {
-						cerr << "Error passing sprite! File: " << filename << ", sprite: " << spriteName << ", key: " << key2 << ". Value was expected to be an integer!" << endl; 
-					}
-				}
-			}
-			if (number_of_frames < 1) {
-				number_of_frames = 1;
-			}
-			if (frame_time < 1) {
-				frame_time = 1;
-			}
-			std::shared_ptr<sago::SagoSprite> ptr(new SagoSprite(*(data->tex),textureName,sf::IntRect(topx,topy,width,height),number_of_frames,frame_time));
-			ptr->SetOrigin(sf::Vector2i(originx,originy));
-			this->data->sprites[std::string(spriteName)] = ptr;
-		}
-		else {
-			cerr << "Error passing sprite! File: " << filename << ", key: " << key << ". Value was expected to be an object!" << endl; 
-		}
+	Json::Value root;   // will contains the root value after parsing
+	Json::Reader reader;
+	bool parsingSuccessful = reader.parse( content, root );
+	if ( !parsingSuccessful ) {
+		cerr << "Failed to parse: " << fullfile << endl
+				<< reader.getFormattedErrorMessages() << endl;
+		return;
 	}
-	json_object_put(jobj);
+	for (Json::Value::iterator it = root.begin(); it != root.end() ; ++it) {
+		string spriteName = it.memberName();
+		Json::Value value = (*it);
+		string textureName = value.get("texture","fallback").asString();
+		int topx = value.get("topx",0).asInt();
+		int topy = value.get("topy",0).asInt();
+		int height = value.get("height",0).asInt();
+		int width = value.get("width",0).asInt();
+		int number_of_frames = value.get("number_of_frames",1).asInt();
+		int frame_time = value.get("frame_time",1).asInt();
+		int originx = value.get("originx",0).asInt();
+		int originy = value.get("originy",0).asInt();
+		if (number_of_frames < 1) {
+			number_of_frames = 1;
+		}
+		if (frame_time < 1) {
+			frame_time = 1;
+		}
+		std::shared_ptr<sago::SagoSprite> ptr(new SagoSprite(*(data->tex),textureName,sf::IntRect(topx,topy,width,height),number_of_frames,frame_time));
+		ptr->SetOrigin(sf::Vector2i(originx,originy));
+		this->data->sprites[std::string(spriteName)] = ptr;
+	}
 }
 
 void SagoSpriteHolder::ReadSprites() {
