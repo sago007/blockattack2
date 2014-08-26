@@ -26,6 +26,9 @@ http://blockattack.sf.net
 #include "sago/SagoSpriteHolder.hpp"
 #include "sago/SagoMisc.hpp"
 #include <memory>
+#include "boost/format.hpp"
+
+using boost::format;
 
 namespace {
 	void DrawOneBlock(const SingleBlock &b, const sf::Rect<int> &place, int i, int j, 
@@ -94,7 +97,7 @@ namespace {
 		sago::DrawText(target,mytext,"Score",place.left+330,place.top+80,16);
 		sago::DrawText(target,mytext,std::to_string(g.GetScore()),place.left+330,place.top+100,16);
 		sago::DrawText(target,mytext,"Time",place.left+330,place.top+130,16);
-		std::string formattedTime = std::to_string(g.GetTime());
+		std::string formattedTime = (format("%02i:%02i") % (g.GetTime()/1000/60) % ((g.GetTime()/1000)%60) ).str();
 		sago::DrawText(target,mytext,formattedTime,place.left+330,place.top+150,16);
 		sago::DrawText(target,mytext,"Chain",place.left+330,place.top+180,16);
 		sago::DrawText(target,mytext,std::to_string(g.GetChain()),place.left+330,place.top+200,16);
