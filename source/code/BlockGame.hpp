@@ -59,7 +59,6 @@ private:
 	void setPlayerWon();
 	void setDraw();
 	bool LineEmpty(int lineNr);
-	bool BoardEmpty();
 	bool hasStaticContent();
 	bool CreateGarbage(int wide, int height);
 	bool CreateGreyGarbage();

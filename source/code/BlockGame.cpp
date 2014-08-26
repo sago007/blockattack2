@@ -154,20 +154,6 @@ bool BlockGame::LineEmpty(int lineNr)
 	return empty;
 }
 
-//Test if the entire board is empty (used for Puzzles)
-bool BlockGame::BoardEmpty()
-{
-	bool empty = true;
-	for (int i=0; i<coloms; i++) {
-		for (int j=0; j<14; j++) {
-			if (board[i][j].type != SingleBlock::Blank) {
-				empty = false;
-			}
-		}
-	}
-	return empty;
-}
-
 bool BlockGame::hasStaticContent() {
 	for (int i=0; i<coloms; i++) {
 		for (int j=1; j<13; j++) {
